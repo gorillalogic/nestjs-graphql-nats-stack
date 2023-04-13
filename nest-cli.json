@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/nest-monorepo/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/nest-monorepo/tsconfig.app.json",
+    "assets": ["**/*.proto"],
+    "watchAssets": true
+  },
+  "monorepo": true,
+  "root": "apps/nest-monorepo",
+  "projects": {
+    "nest-monorepo": {
+      "type": "application",
+      "root": "apps/nest-monorepo",
+      "entryFile": "main",
+      "sourceRoot": "apps/nest-monorepo/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/nest-monorepo/tsconfig.app.json"
+      }
+    },
+    "users": {
+      "type": "application",
+      "root": "apps/users",
+      "entryFile": "main",
+      "sourceRoot": "apps/users/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/users/tsconfig.app.json"
+      }
+    },
+    "posts": {
+      "type": "application",
+      "root": "apps/posts",
+      "entryFile": "main",
+      "sourceRoot": "apps/posts/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/posts/tsconfig.app.json"
+      }
+    },
+    "comments": {
+      "type": "application",
+      "root": "apps/comments",
+      "entryFile": "main",
+      "sourceRoot": "apps/comments/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/comments/tsconfig.app.json"
+      }
+    }
+  }
+}
