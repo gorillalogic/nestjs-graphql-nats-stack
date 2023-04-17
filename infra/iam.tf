@@ -60,7 +60,7 @@ resource "aws_iam_policy" "rds_access_policy" {
               "rds-db:connect"
             ],
             "Resource": "*"
-        },
+        }
     ]
 }
 EOF
