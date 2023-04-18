@@ -23,7 +23,7 @@ resource "aws_ecs_task_definition" "main" {
       portMappings = [{
         protocol = "tcp"
         containerPort = 3000
-        hostPort = var.graphql_gateway_port
+        hostPort = 3000 
       }]
       environment = [
         {
@@ -44,56 +44,6 @@ resource "aws_ecs_task_definition" "main" {
       name = "microservice-users-${var.environment}"
       image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
       entryPoint = ["node", "dist/apps/users/main.js"]
-      essential = true
-      portMappings = [{
-        protocol = "tcp"
-        containerPort = 3000
-        hostPort = 3000 
-      }]
-      environment = [
-        {
-          name = "NODE_ENV"
-          value = "production"
-        }
-      ]
-      logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-          awslogs-group = "/fargate/service/${var.name}-${var.environment}"
-          awslogs-region = "${var.aws-region}"
-          awslogs-stream-prefix = local.aws_ecs_service_name
-        }
-      }
-    },
-    {
-      name = "microservice-posts-${var.environment}"
-      image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
-      entryPoint = ["node", "dist/apps/posts/main.js"]
-      essential = true
-      portMappings = [{
-        protocol = "tcp"
-        containerPort = 3000
-        hostPort = 3000 
-      }]
-      environment = [
-        {
-          name = "NODE_ENV"
-          value = "production"
-        }
-      ]
-      logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-          awslogs-group = "/fargate/service/${var.name}-${var.environment}"
-          awslogs-region = "${var.aws-region}"
-          awslogs-stream-prefix = local.aws_ecs_service_name
-        }
-      }
-    },
-    {
-      name = "microservice-comments-${var.environment}"
-      image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
-      entryPoint = ["node", "dist/apps/comments/main.js"]
       essential = true
       portMappings = [{
         protocol = "tcp"

@@ -103,3 +103,4 @@ dist
 
 # Env files
 .env*
+infra/terraform.tfstate
