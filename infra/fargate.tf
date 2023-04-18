@@ -17,7 +17,8 @@ resource "aws_ecs_task_definition" "main" {
   container_definitions = jsonencode([
     {
       name = "graphql-gateway-${var.environment}"
-      image = "${aws_ecr_repository.graphql-gateway.repository_url}:latest"
+      image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
+      entryPoint = ["npm", "run", "start"]
       essential = true
       portMappings = [{
         protocol = "tcp"
@@ -41,7 +42,8 @@ resource "aws_ecs_task_definition" "main" {
     },
     {
       name = "microservice-users-${var.environment}"
-      image = "${aws_ecr_repository.users.repository_url}:latest"
+      image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
+      entryPoint = ["npm", "run", "start", "users"]
       essential = true
       portMappings = [{
         protocol = "tcp"
@@ -65,7 +67,8 @@ resource "aws_ecs_task_definition" "main" {
     },
     {
       name = "microservice-posts-${var.environment}"
-      image = "${aws_ecr_repository.posts.repository_url}:latest"
+      image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
+      entryPoint = ["npm", "run", "start", "posts"]
       essential = true
       portMappings = [{
         protocol = "tcp"
@@ -89,7 +92,8 @@ resource "aws_ecs_task_definition" "main" {
     },
     {
       name = "microservice-comments-${var.environment}"
-      image = "${aws_ecr_repository.comments.repository_url}:latest"
+      image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
+      entryPoint = ["npm", "run", "start", "comments"]
       essential = true
       portMappings = [{
         protocol = "tcp"
