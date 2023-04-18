@@ -18,7 +18,7 @@ resource "aws_ecs_task_definition" "main" {
     {
       name = "graphql-gateway-${var.environment}"
       image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
-      entryPoint = ["npm", "run", "start"]
+      entryPoint = ["node", "dist/apps/nest-monorepo/main.js"]
       essential = true
       portMappings = [{
         protocol = "tcp"
@@ -43,7 +43,7 @@ resource "aws_ecs_task_definition" "main" {
     {
       name = "microservice-users-${var.environment}"
       image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
-      entryPoint = ["npm", "run", "start", "users"]
+      entryPoint = ["node", "dist/apps/users/main.js"]
       essential = true
       portMappings = [{
         protocol = "tcp"
@@ -68,7 +68,7 @@ resource "aws_ecs_task_definition" "main" {
     {
       name = "microservice-posts-${var.environment}"
       image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
-      entryPoint = ["npm", "run", "start", "posts"]
+      entryPoint = ["node", "dist/apps/posts/main.js"]
       essential = true
       portMappings = [{
         protocol = "tcp"
@@ -93,7 +93,7 @@ resource "aws_ecs_task_definition" "main" {
     {
       name = "microservice-comments-${var.environment}"
       image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
-      entryPoint = ["npm", "run", "start", "comments"]
+      entryPoint = ["node", "dist/apps/comments/main.js"]
       essential = true
       portMappings = [{
         protocol = "tcp"
