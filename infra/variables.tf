@@ -14,9 +14,15 @@ variable "aws-region" {
   default = "us-east-1"
 }
 
+variable "database_prefix" {
+  type = string
+  description = "Prefix of RDS database name"
+  default = "nestdb"
+}
+
 variable "availability_zones" {
   description = "a comma-separated list of availability zones, defaults to all AZ of the region, if set to something other than the defaults, both private_subnets and public_subnets have to be defined as well"
-  default     = ["us-east-1a", "us-east-1b"]
+  default     = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d"]
 }
 
 variable "cidr" {
@@ -26,8 +32,13 @@ variable "cidr" {
 
 variable "public_subnets" {
   description = "a list of CIDRs for public subnets in your VPC, must be set if the cidr variable is defined, needs to have as many elements as there are availability zones"
-  default     = ["10.0.16.0/20"]
+  default     = ["10.0.0.0/24", "10.0.1.0/24"]
 } 
+
+variable "private_subnets" {
+  description = "a list of CIDRs for public subnets in your VPC, must be set if the cidr variable is defined, needs to have as many elements as there are availability zones"
+  default     = ["10.0.2.0/24", "10.0.3.0/24"]
+}
 
 variable "graphql_gateway_port" {
   description = "the external port used in the task for the graphql gateway."

@@ -18,3 +18,16 @@ resource "aws_security_group" "ecs_tasks" {
     ipv6_cidr_blocks = ["::/0"]
   }
 }
+
+resource "aws_security_group" "rds_sg" {
+  name = "${var.name}-rds-${var.environment}"
+  vpc_id = aws_vpc.main.id
+  
+  ingress {
+    description = "Allow MySQL traffic from only the ecs_tasks sg"
+    from_port   = "3306"
+    to_port     = "3306"
+    protocol    = "tcp"
+    security_groups = [aws_security_group.ecs_tasks.id]
+  }
+}

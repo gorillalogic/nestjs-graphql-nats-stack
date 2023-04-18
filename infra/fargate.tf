@@ -45,11 +45,6 @@ resource "aws_ecs_task_definition" "main" {
       image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
       entryPoint = ["node", "dist/apps/users/main.js"]
       essential = true
-      portMappings = [{
-        protocol = "tcp"
-        containerPort = 3000
-        hostPort = 3000 
-      }]
       environment = [
         {
           name = "NODE_ENV"

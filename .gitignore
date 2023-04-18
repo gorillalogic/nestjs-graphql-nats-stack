@@ -104,3 +104,5 @@ dist
 # Env files
 .env*
 infra/terraform.tfstate
+infra/config.s3.tfbackend
+infra/terraform.tfstate.backup
