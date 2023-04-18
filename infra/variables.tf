@@ -30,7 +30,7 @@ variable "public_subnets" {
 } 
 
 variable "graphql_gateway_port" {
-  description = "the external an internal ports used in the task for the graphql gateway."
+  description = "the external port used in the task for the graphql gateway."
   default = 80
 }
 
