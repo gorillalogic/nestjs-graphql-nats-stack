@@ -43,3 +43,19 @@ variable "database_password" {
   description = "The database authentication password"
   default = "secretpassword"
 }
+
+variable "task_cpu" {
+  description = "The number of CPU units used by the task"
+  default = 512 
+}
+
+variable "task_memory" {
+  description = "The amount (in MiB) of memory used by the task"
+  default = 2048
+}
+
+variable "logs_retention_in_days" {
+  type = number
+  default = 30
+  description = "Specifies the number of days you want to retain log events"
+}

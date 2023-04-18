@@ -1,20 +1,5 @@
-resource "aws_ecr_repository" "users" {
+resource "aws_ecr_repository" "nest-monorepo" {
   name = "${var.name}-users"
-  image_tag_mutability = "MUTABLE"
-}
-
-resource "aws_ecr_repository" "posts" {
-  name = "${var.name}-posts"
-  image_tag_mutability = "MUTABLE"
-}
-
-resource "aws_ecr_repository" "comments" {
-  name = "${var.name}-comments"
-  image_tag_mutability = "MUTABLE"
-}
-
-resource "aws_ecr_repository" "graphql-gateway" {
-  name = "${var.name}-graphql-gateway"
   image_tag_mutability = "MUTABLE"
 }
 
@@ -36,21 +21,6 @@ locals {
 }
 
 resource "aws_ecr_lifecycle_policy" "users" {
-  repository = aws_ecr_repository.users.name
-  policy = local.aws_ecr_lifecycle_policy_json
-}
-
-resource "aws_ecr_lifecycle_policy" "posts" {
-  repository = aws_ecr_repository.users.name
-  policy = local.aws_ecr_lifecycle_policy_json
-}
-
-resource "aws_ecr_lifecycle_policy" "comments" {
-  repository = aws_ecr_repository.users.name
-  policy = local.aws_ecr_lifecycle_policy_json
-}
-
-resource "aws_ecr_lifecycle_policy" "graphql-gateway" {
-  repository = aws_ecr_repository.users.name
+  repository = aws_ecr_repository.nest-monorepo.name
   policy = local.aws_ecr_lifecycle_policy_json
 }
