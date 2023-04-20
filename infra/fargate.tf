@@ -18,7 +18,7 @@ resource "aws_ecs_task_definition" "main" {
     {
       name = "graphql-gateway-${var.environment}"
       image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
-      entryPoint = ["node", "dist/apps/nest-monorepo/main.js"]
+      entryPoint = ["npm", "run", "start:prod"]
       essential = true
       portMappings = [{
         protocol = "tcp"

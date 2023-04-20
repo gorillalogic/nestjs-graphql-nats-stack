@@ -5,7 +5,15 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
-    ClientsModule.register([{ name: 'GW_SERVICE', transport: Transport.NATS }]),
+    ClientsModule.register([
+      {
+        name: 'GW_SERVICE',
+        transport: Transport.NATS,
+        options: {
+          debug: true,
+        },
+      },
+    ]),
   ],
   providers: [UsersResolver, UsersService],
 })
