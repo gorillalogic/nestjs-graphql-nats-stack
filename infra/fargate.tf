@@ -29,6 +29,10 @@ resource "aws_ecs_task_definition" "main" {
         {
           name = "NODE_ENV"
           value = "production"
+        },
+        {
+          name = "NO_COLOR"
+          value = "1"
         }
       ]
       logConfiguration = {
@@ -49,6 +53,34 @@ resource "aws_ecs_task_definition" "main" {
         {
           name = "NODE_ENV"
           value = "production"
+        },
+        {
+          name = "NO_COLOR"
+          value = "1"
+        },
+        {
+          name = "DATABASE_TYPE"
+          value = "mariadb" 
+        },
+        {
+          name = "DATABASE_HOST"
+          value = aws_db_instance.default.address
+        },
+        {
+          name = "DATABASE_PORT"
+          value = tostring(aws_db_instance.default.port)
+        },
+        {
+          name = "DATABASE_USERNAME"
+          value = aws_db_instance.default.username
+        },
+        {
+          name = "DATABASE_PASSWORD"
+          value = aws_db_instance.default.password
+        },
+        {
+          name = "DATABASE_DATABASE"
+          value = aws_db_instance.default.db_name
         }
       ]
       logConfiguration = {

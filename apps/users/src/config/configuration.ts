@@ -3,7 +3,7 @@ import { User } from '../users/entities/user.entity';
 export default () => ({
   port: process.env.PORT,
   database: {
-    type: 'mysql',
+    type: process.env.DATABASE_TYPE,
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT,
     database: process.env.DATABASE_DATABASE,

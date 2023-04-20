@@ -7,6 +7,8 @@ terraform {
   }
 
   required_version = ">= 1.2.0"
+
+  # See config.s3.tfbackend.example
   backend "s3" {}
 }
 
