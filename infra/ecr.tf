@@ -1,6 +1,7 @@
 resource "aws_ecr_repository" "nest-monorepo" {
   name = "${var.name}-users"
   image_tag_mutability = "MUTABLE"
+  force_delete = true
 }
 
 locals {
