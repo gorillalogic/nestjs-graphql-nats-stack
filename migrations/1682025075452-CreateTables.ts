@@ -3,7 +3,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 export class CreateTables1682025075452 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE IF NOT EXISTS\`user\` (
+      `CREATE TABLE IF NOT EXISTS \`user\` (
         \`id\` int NOT NULL AUTO_INCREMENT,
         \`isActive\` tinyint NOT NULL DEFAULT '1',
         \`email\` varchar(50) NOT NULL,
@@ -11,7 +11,7 @@ export class CreateTables1682025075452 implements MigrationInterface {
         \`lastName\` varchar(30) NOT NULL,
       PRIMARY KEY (\`id\`),
       UNIQUE KEY \`IDX_e12875dfb3b1d92d7d7c5377e2\` (\`email\`)
-      ) ENGINE=InnoDB AUTO_INCREMENT=292 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;`,
+      ) ENGINE=InnoDB AUTO_INCREMENT=292 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;`,
     );
   }
 

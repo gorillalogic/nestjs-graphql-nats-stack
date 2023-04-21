@@ -54,10 +54,13 @@ USER node
 ###################
 
 FROM node:18-alpine As production
+RUN npm install -g typescript ts-node
 
 # Copy the bundled code from the build stage to the production image
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+COPY --chown=node:node --from=build /usr/src/app/migrations ./migrations
+COPY --chown=node:node --from=build /usr/src/app/entrypoint.sh ./entrypoint.sh
 
 # Start the server using the production build
-CMD [ "node", "dist/apps/nest-monorepo/main.js" ]
+CMD [ "sh", "./entrypoint.sh" ]

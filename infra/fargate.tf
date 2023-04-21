@@ -4,6 +4,40 @@ resource "aws_ecs_cluster" "main" {
 
 locals {
   aws_ecs_service_name = "${var.name}-service-${var.environment}"
+  common_env_vars = [
+    {
+      name = "NODE_ENV"
+      value = "production"
+    },
+    {
+      name = "NO_COLOR"
+      value = "1"
+    },
+    {
+      name = "DATABASE_TYPE"
+      value = "mariadb"
+    },
+    {
+      name = "DATABASE_HOST"
+      value = aws_db_instance.default.address
+    },
+    {
+      name = "DATABASE_PORT"
+      value = tostring(aws_db_instance.default.port)
+    },
+    {
+      name = "DATABASE_USERNAME"
+      value = aws_db_instance.default.username
+    },
+    {
+      name = "DATABASE_PASSWORD"
+      value = aws_db_instance.default.password
+    },
+    {
+      name = "DATABASE_DATABASE"
+      value = aws_db_instance.default.db_name
+    }
+  ]
 }
 
 resource "aws_ecs_task_definition" "main" {
@@ -18,23 +52,14 @@ resource "aws_ecs_task_definition" "main" {
     {
       name = "graphql-gateway-${var.environment}"
       image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
-      entryPoint = ["npm", "run", "start:prod"]
+      entryPoint = ["sh", "./entrypoint.sh"]
       essential = true
       portMappings = [{
         protocol = "tcp"
         containerPort = 3000
-        hostPort = 3000 
+        hostPort = 3000
       }]
-      environment = [
-        {
-          name = "NODE_ENV"
-          value = "production"
-        },
-        {
-          name = "NO_COLOR"
-          value = "1"
-        }
-      ]
+      environment = concat(local.common_env_vars, [])
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -49,40 +74,7 @@ resource "aws_ecs_task_definition" "main" {
       image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
       entryPoint = ["node", "dist/apps/users/main.js"]
       essential = true
-      environment = [
-        {
-          name = "NODE_ENV"
-          value = "production"
-        },
-        {
-          name = "NO_COLOR"
-          value = "1"
-        },
-        {
-          name = "DATABASE_TYPE"
-          value = "mariadb" 
-        },
-        {
-          name = "DATABASE_HOST"
-          value = aws_db_instance.default.address
-        },
-        {
-          name = "DATABASE_PORT"
-          value = tostring(aws_db_instance.default.port)
-        },
-        {
-          name = "DATABASE_USERNAME"
-          value = aws_db_instance.default.username
-        },
-        {
-          name = "DATABASE_PASSWORD"
-          value = aws_db_instance.default.password
-        },
-        {
-          name = "DATABASE_DATABASE"
-          value = aws_db_instance.default.db_name
-        }
-      ]
+      environment = concat(local.common_env_vars, [])
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -99,9 +91,9 @@ resource "aws_ecs_task_definition" "main" {
       portMappings = [
         {
           protocol = "tcp"
-          containerPort = 4222 
+          containerPort = 4222
           hostPort = 4222
-        }, 
+        },
         {
           protocol = "tcp"
           containerPort = 8222

@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
-    "typeorm:run-migrations": "npm run typeorm migration:run -- -d ./apps/users/src/migrations/typeOrm.config.ts",
+    "typeorm:run-migrations": "npm run typeorm migration:run -- -d ./migrations/typeOrm.config.ts",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
