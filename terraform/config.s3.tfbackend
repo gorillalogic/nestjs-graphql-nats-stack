@@ -1,0 +1,3 @@
+bucket = "labs-terraform-states-d0cff7"
+key    = "nestjs-graphql-nats/development/terraform.tfstate"
+region = "us-east-1"
