@@ -1,4 +1,5 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { configureStore, combineReducers, applyMiddleware } from "@reduxjs/toolkit";
+import thunkMiddleware from "redux-thunk";
 import {
   persistStore,
   persistReducer,
@@ -19,19 +20,21 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth"],
 }
 
 const persistedRootReducer = persistReducer(persistConfig, rootReducer)
+const composedEnhancer = applyMiddleware(thunkMiddleware);
 
 const store = configureStore({
   reducer: persistedRootReducer,
-middleware: (getDefaultMiddleware) =>
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
+  enhancers: [composedEnhancer],
+  devTools: true,
 })
 
 const persistor = persistStore(store);

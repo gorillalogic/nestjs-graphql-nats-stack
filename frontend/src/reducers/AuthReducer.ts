@@ -1,27 +1,48 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
 
-export interface AuthState {
-  tokens: { 
-    access: string,
-    refresh: string,
-  } | null;
+interface AuthStateTokens {
+  access: string,
+  refresh: string,
 }
 
-const initialState = { tokens: null } as AuthState;
+interface AuthStateChallenge {
+  url: string,
+  codeVerifier: string,
+  codeChallenge: string,
+}
+
+export interface AuthState {
+  tokens?: AuthStateTokens,
+  challenge?: AuthStateChallenge,
+  tempCode?: string,
+}
+
+const initialState = {} as AuthState;
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    saveJwt(state, action: PayloadAction<AuthState>) {
-      state.tokens = action.payload.tokens; 
+    saveChallenge(state, action: PayloadAction<AuthStateChallenge>) {
+      state.challenge = action.payload;
+    },
+    clearChallenge(state) {
+      state.challenge = undefined;
+    },
+    saveJwt(state, action: PayloadAction<AuthStateTokens>) {
+      state.tokens = action.payload; 
     },
     clearJwt(state) {
-      state.tokens = null;
+      state.tokens = undefined;
     }
   }
 });
 
-export const { saveJwt, clearJwt } = authSlice.actions;
+// export const fetchTokens(createAsyncThunk("/tokens", async () => {
+//   const response = await client.get("/tokens")
+//   return response.data;
+// }))
+
+export const { saveJwt, clearJwt, saveChallenge, clearChallenge } = authSlice.actions;
 export default authSlice.reducer;
