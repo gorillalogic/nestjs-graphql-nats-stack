@@ -1,12 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
+import { gql } from "apollo-boost";
+import client from "../lib/graphql/client";
 
-interface AuthStateTokens {
+export interface AuthStateTokens {
   access: string,
   refresh: string,
 }
 
-interface AuthStateChallenge {
+export interface AuthStateChallenge {
   url: string,
   codeVerifier: string,
   codeChallenge: string,
@@ -21,7 +23,7 @@ export interface AuthState {
 const initialState = {} as AuthState;
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     saveChallenge(state, action: PayloadAction<AuthStateChallenge>) {
@@ -39,10 +41,23 @@ const authSlice = createSlice({
   }
 });
 
-// export const fetchTokens(createAsyncThunk("/tokens", async () => {
-//   const response = await client.get("/tokens")
-//   return response.data;
-// }))
+export const fetchTokens = createAsyncThunk("/tokens", async () => {
+  const response = await client.query({
+    query: gql`
+      {
+        users {
+          id,
+          email,
+          firstName,
+          lastName,
+          isActive,
+        }
+      }
+    `
+  });
+  console.dir(response);
+  return response.data;
+})
 
 export const { saveJwt, clearJwt, saveChallenge, clearChallenge } = authSlice.actions;
 export default authSlice.reducer;

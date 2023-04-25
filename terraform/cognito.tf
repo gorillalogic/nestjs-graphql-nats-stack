@@ -25,7 +25,7 @@ resource "aws_cognito_user_pool" "default" {
 resource "aws_cognito_user_pool_client" "client" {
   name = "${var.name}-${var.environment}-cognito-user-pool-client"
   user_pool_id = aws_cognito_user_pool.default.id
-  generate_secret = false 
+  generate_secret = false
 }
 
 resource "aws_cognito_user_pool_domain" "main" {

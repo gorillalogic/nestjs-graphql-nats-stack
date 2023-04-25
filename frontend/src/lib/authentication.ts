@@ -13,7 +13,6 @@ export const prepareLoginRedirect = () : PreparationLoginData => {
     VITE_LOGIN_RESPONSE_TYPE: response_type,
     VITE_LOGIN_SCOPE: scope,
     VITE_LOGIN_CODE_CHALLENGE_METHOD: code_challenge_method,
-    VITE_LOGIN_REDIRECT_URI,
   } = import.meta.env;
   if (!endpoint || !client_id || !response_type || !scope || !code_challenge_method) {
     throw "Error retrieving env vars";
@@ -28,7 +27,7 @@ export const prepareLoginRedirect = () : PreparationLoginData => {
     response_type,
     code_challenge_method,
     code_challenge: code_challenge, 
-    redirect_uri: VITE_LOGIN_REDIRECT_URI ?? window.location.origin + "/authorize",
+    redirect_uri: window.location.origin + "/authorize",
   }).toString() + `&scope=${scope}`
   const url = `${endpoint}?${params}`
 

@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { saveJwt, clearJwt, saveChallenge } from '../../reducers/AuthReducer'
-import type { AuthState } from '../../reducers/AuthReducer';
+import { saveJwt, clearJwt, saveChallenge, clearChallenge, fetchTokens } from '../../reducers/AuthReducer'
+import type { AuthState, AuthStateChallenge } from '../../reducers/AuthReducer';
 import { prepareLoginRedirect } from '../../lib/authentication';
 
 function prepareLogin() {
@@ -12,19 +13,33 @@ function prepareLogin() {
   }
 }
 
-function redirectLogin(url: string) {
-  window.location.replace(url)
+function requestTokens(challenge: AuthStateChallenge){
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
+  const tempCode = params.get("code");
+
+  if (!tempCode) {
+    console.error("Temporary Code missing");
+    window.location.href = "/"
+  } else {
+    const dispatch = useDispatch();
+    dispatch(fetchTokens());
+  }
 }
 
-const Authorizer : React.FC = () => {
+export default function Authorizer() {
   const auth : AuthState = useSelector((state: any) => state.auth);
 
-  if (!auth.tokens && window.location.pathname !== "/authorize"){
-    if (!auth.challenge) {
-      prepareLogin();
-    } else {
-      redirectLogin(auth.challenge.url)
-    }
+  console.log(window.location.pathname)
+  if (!auth.tokens && window.location.pathname !== "/authorize" && !auth.challenge){
+    prepareLogin();
+  } else if (!auth.tokens && window.location.pathname !== "/authorize" && auth.challenge) {
+    window.location.replace(auth.challenge.url)
+  } else if (!auth.tokens && window.location.pathname === "/authorize" && !auth.challenge) {
+    console.error("Challenge data does not exist");
+    window.location.href = "/";
+  } else if (!auth.tokens && window.location.pathname === "/authorize" && auth.challenge) {
+    requestTokens(auth.challenge)
   }
 
   return (
@@ -37,5 +52,3 @@ const Authorizer : React.FC = () => {
     </>
   )
 }
-
-export default Authorizer;
