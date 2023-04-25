@@ -1,12 +1,15 @@
-import { useState } from 'react'
 import './App.css'
+import { useSelector, useDispatch } from "react-redux";
+import { saveJwt, clearJwt } from '../../reducers/AuthReducer'
+import type { AuthState } from '../../reducers/AuthReducer';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { tokens } : AuthState = useSelector((state: any) => state.auth)
 
   return (
     <>
-      Root Component 
+      <li> { tokens?.access ?? "Access Empty" } </li>
+      <li> { tokens?.refresh ?? "Refresh Empty" } </li>
     </>
   )
 }
