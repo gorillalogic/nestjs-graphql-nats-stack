@@ -1,30 +1,30 @@
-[1mProject:[0m gorillalogic/nestjs-graphql-nats-stack/terraform
+Project: gorillalogic/nestjs-graphql-nats-stack/terraform
 
- [4mName[0m                                                         [4mMonthly Qty[0m  [4mUnit[0m              [4mMonthly Cost[0m 
+ Name                                                         Monthly Qty  Unit              Monthly Cost 
                                                                                                           
- [1maws_cloudwatch_log_group.logs[0m                                                                            
- [2m├─[0m Data ingested                                          Monthly cost depends on usage: $0.50 per GB    
- [2m├─[0m Archival Storage                                       Monthly cost depends on usage: $0.03 per GB    
- [2m└─[0m Insights queries data scanned                          Monthly cost depends on usage: $0.005 per GB   
+ aws_cloudwatch_log_group.logs                                                                            
+ ├─ Data ingested                                          Monthly cost depends on usage: $0.50 per GB    
+ ├─ Archival Storage                                       Monthly cost depends on usage: $0.03 per GB    
+ └─ Insights queries data scanned                          Monthly cost depends on usage: $0.005 per GB   
                                                                                                           
- [1maws_db_instance.default[0m                                                                                  
- [2m├─[0m Database instance (on-demand, Single-AZ, db.t3.micro)             730  hours                   $12.41 
- [2m└─[0m Storage (general purpose SSD, gp2)                                  5  GB                       $0.58 
+ aws_db_instance.default                                                                                  
+ ├─ Database instance (on-demand, Single-AZ, db.t3.micro)             730  hours                   $12.41 
+ └─ Storage (general purpose SSD, gp2)                                  5  GB                       $0.58 
                                                                                                           
- [1maws_ecr_repository.nest-monorepo[0m                                                                         
- [2m└─[0m Storage                                                Monthly cost depends on usage: $0.10 per GB    
+ aws_ecr_repository.nest-monorepo                                                                         
+ └─ Storage                                                Monthly cost depends on usage: $0.10 per GB    
                                                                                                           
- [1maws_ecs_service.main[0m                                                                                     
- [2m├─[0m Per GB per hour                                                     2  GB                       $6.49 
- [2m└─[0m Per vCPU per hour                                                 0.5  CPU                     $14.78 
+ aws_ecs_service.main                                                                                     
+ ├─ Per GB per hour                                                     2  GB                       $6.49 
+ └─ Per vCPU per hour                                                 0.5  CPU                     $14.78 
                                                                                                           
- [1maws_nat_gateway.main[0m                                                                                     
- [2m├─[0m NAT gateway                                                       730  hours                   $32.85 
- [2m└─[0m Data processed                                         Monthly cost depends on usage: $0.045 per GB   
+ aws_nat_gateway.main                                                                                     
+ ├─ NAT gateway                                                       730  hours                   $32.85 
+ └─ Data processed                                         Monthly cost depends on usage: $0.045 per GB   
                                                                                                           
-[1m OVERALL TOTAL[0m                                                                                     $67.10 
+ OVERALL TOTAL                                                                                     $67.10 
 ──────────────────────────────────
 34 cloud resources were detected:
-∙ 5 were estimated, 4 of which include usage-based costs, see [4mhttps://infracost.io/usage-file[0m
+∙ 5 were estimated, 4 of which include usage-based costs, see https://infracost.io/usage-file
 ∙ 26 were free, rerun with --show-skipped to see details
 ∙ 3 are not supported yet, rerun with --show-skipped to see details
