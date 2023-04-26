@@ -1,12 +1,12 @@
 import pkceChallenge from "pkce-challenge";
 
 interface PreparationLoginData {
-  url?: string,
-  codeChallenge?: string,
-  codeVerifier?: string,
+  url: string,
+  code_challenge: string,
+  code_verifier: string,
 };
 
-export const prepareLoginRedirect = () : PreparationLoginData => {
+export const prepareLoginRedirect : () => PreparationLoginData | undefined = () => {
   const { 
     VITE_LOGIN_COGNITO_HOST: host,
     VITE_LOGIN_CLIENT_ID: client_id,
@@ -15,7 +15,7 @@ export const prepareLoginRedirect = () : PreparationLoginData => {
     VITE_LOGIN_CODE_CHALLENGE_METHOD: code_challenge_method,
   } = import.meta.env;
   if (!host || !client_id || !response_type || !scope || !code_challenge_method) {
-    throw "Error retrieving env vars";
+    return
   }
 
   const { code_challenge, code_verifier } = pkceChallenge(128);
@@ -31,9 +31,5 @@ export const prepareLoginRedirect = () : PreparationLoginData => {
   }).toString() + `&scope=${scope}`
   const url = `${host}/login?${params}`
 
-  return { 
-    url, 
-    codeChallenge: code_challenge, 
-    codeVerifier: code_verifier,
-  }; 
+  return { url, code_challenge, code_verifier } 
 }

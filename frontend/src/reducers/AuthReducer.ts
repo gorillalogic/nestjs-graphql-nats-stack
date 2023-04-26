@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
+import { prepareLoginRedirect } from "../lib/authentication";
 
 export interface AuthStateTokens {
   id_token: string,
@@ -11,16 +12,16 @@ export interface AuthStateTokens {
 
 export interface AuthStateChallenge {
   url: string,
-  codeVerifier: string,
-  codeChallenge: string,
+  code_verifier: string,
+  code_challenge: string,
 }
 
 export enum AuthStateName {
-  UNAUTHORIZED,
-  CHALLENGE_GENERATED,
-  FETCHING_TOKENS,
-  AUTHORIZED,
-  FAILED,
+  UNAUTHORIZED = "UNAUTHORIZED",
+  CHALLENGE_GENERATED = "CHALLENGE_GENERATED",
+  FETCHING_TOKENS = "FETCHING_TOKENS",
+  AUTHORIZED = "AUTHORIZED",
+  FAILED = "FAILED",
 }
 
 export interface AuthState {
@@ -51,7 +52,7 @@ const authSlice = createSlice({
       state.tempCode = undefined;
       state.state = AuthStateName.AUTHORIZED
     },
-    clear(state) {
+    reset(state) {
       state.challenge = undefined;
       state.tokens = undefined;
       state.tempCode = undefined;
@@ -59,6 +60,10 @@ const authSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
+    builder.addCase(createChallenge.fulfilled, (state, action) => {
+      state.challenge = action.payload;
+      state.state = AuthStateName.CHALLENGE_GENERATED;
+    })
     builder.addCase(fetchTokens.pending, (state, action) => {
       if (state.state === AuthStateName.CHALLENGE_GENERATED) {
         state.state = AuthStateName.FETCHING_TOKENS
@@ -86,10 +91,21 @@ const authSlice = createSlice({
   }
 });
 
-export const fetchTokens = createAsyncThunk("/tokens", async (authorization_code: string, { getState }) => {
+export const createChallenge = createAsyncThunk("auth/challenge", (_, { rejectWithValue }) => {
+  const details = prepareLoginRedirect();
+  if (!details) {
+    return rejectWithValue("Create Challenge Failed");
+  }
+  return details;
+});
+
+export const fetchTokens = createAsyncThunk("auth/tokens", async (authorization_code: string, { getState, requestId, rejectWithValue }) => {
   const { auth } = getState() as { auth: AuthState };
-  if (auth.state !== AuthStateName.CHALLENGE_GENERATED) {
-    return;
+
+  // Ensures it executes once at a time, which can happen with React Strict mode and double render.
+  const guard = (auth.state === AuthStateName.CHALLENGE_GENERATED && auth.tokensRequestId === requestId)
+  if (!guard) {
+    return rejectWithValue("Request already in progress")
   }
 
   const response = await fetch(`${import.meta.env.VITE_LOGIN_COGNITO_HOST}/oauth2/token`, {
@@ -101,13 +117,16 @@ export const fetchTokens = createAsyncThunk("/tokens", async (authorization_code
       grant_type: "authorization_code",
       client_id: import.meta.env.VITE_LOGIN_CLIENT_ID,
       code: authorization_code,
-      code_verifier: auth.challenge!.codeVerifier, 
+      code_verifier: auth.challenge!.code_verifier, 
       redirect_uri: `${window.location.origin}/authorize`
     })
   })
-  console.dir(response)
-  return await response.json(); 
+  if (response.ok) {
+    return await response.json(); 
+  } else {
+    return rejectWithValue(response.body);
+  }
 })
 
-export const { saveChallenge, clear } = authSlice.actions;
+export const { saveChallenge, reset } = authSlice.actions;
 export default authSlice.reducer;
