@@ -1,39 +1,44 @@
 Project: gorillalogic/nestjs-graphql-nats-stack/terraform
 
- Name                                                         Monthly Qty  Unit              Monthly Cost 
-                                                                                                          
- aws_cloudwatch_log_group.logs                                                                            
- ├─ Data ingested                                          Monthly cost depends on usage: $0.50 per GB    
- ├─ Archival Storage                                       Monthly cost depends on usage: $0.03 per GB    
- └─ Insights queries data scanned                          Monthly cost depends on usage: $0.005 per GB   
-                                                                                                          
- aws_db_instance.default                                                                                  
- ├─ Database instance (on-demand, Single-AZ, db.t3.micro)             730  hours                   $12.41 
- └─ Storage (general purpose SSD, gp2)                                  5  GB                       $0.58 
-                                                                                                          
- aws_ecr_repository.nest-monorepo                                                                         
- └─ Storage                                                Monthly cost depends on usage: $0.10 per GB    
-                                                                                                          
- aws_ecs_service.main                                                                                     
- ├─ Per GB per hour                                                     2  GB                       $6.49 
- └─ Per vCPU per hour                                                 0.5  CPU                     $14.78 
-                                                                                                          
- aws_lb.main                                                                                              
- ├─ Application load balancer                                         730  hours                   $16.43 
- └─ Load balancer capacity units                           Monthly cost depends on usage: $5.84 per LCU   
-                                                                                                          
- aws_nat_gateway.main                                                                                     
- ├─ NAT gateway                                                       730  hours                   $32.85 
- └─ Data processed                                         Monthly cost depends on usage: $0.045 per GB   
-                                                                                                          
- aws_route53_zone.main                                                                                    
- └─ Hosted zone                                                         1  months                   $0.50 
-                                                                                                          
- OVERALL TOTAL                                                                                     $84.02 
+ Name                                                           Monthly Qty  Unit                  Monthly Cost 
+                                                                                                                
+ aws_cloudwatch_log_group.logs                                                                                  
+ ├─ Data ingested                                          Monthly cost depends on usage: $0.50 per GB          
+ ├─ Archival Storage                                       Monthly cost depends on usage: $0.03 per GB          
+ └─ Insights queries data scanned                          Monthly cost depends on usage: $0.005 per GB         
+                                                                                                                
+ aws_db_instance.default                                                                                        
+ ├─ Database instance (on-demand, Single-AZ, db.t3.micro)               730  hours                       $12.41 
+ └─ Storage (general purpose SSD, gp2)                                    5  GB                           $0.58 
+                                                                                                                
+ aws_ecr_repository.nest-monorepo                                                                               
+ └─ Storage                                                Monthly cost depends on usage: $0.10 per GB          
+                                                                                                                
+ aws_ecs_service.main                                                                                           
+ ├─ Per GB per hour                                                       2  GB                           $6.49 
+ └─ Per vCPU per hour                                                   0.5  CPU                         $14.78 
+                                                                                                                
+ aws_lb.main                                                                                                    
+ ├─ Application load balancer                                           730  hours                       $16.43 
+ └─ Load balancer capacity units                           Monthly cost depends on usage: $5.84 per LCU         
+                                                                                                                
+ aws_nat_gateway.main                                                                                           
+ ├─ NAT gateway                                                         730  hours                       $32.85 
+ └─ Data processed                                         Monthly cost depends on usage: $0.045 per GB         
+                                                                                                                
+ aws_route53_record.validation                                                                                  
+ ├─ Standard queries (first 1B)                            Monthly cost depends on usage: $0.40 per 1M queries  
+ ├─ Latency based routing queries (first 1B)               Monthly cost depends on usage: $0.60 per 1M queries  
+ └─ Geo DNS queries (first 1B)                             Monthly cost depends on usage: $0.70 per 1M queries  
+                                                                                                                
+ aws_route53_zone.main                                                                                          
+ └─ Hosted zone                                                           1  months                       $0.50 
+                                                                                                                
+ OVERALL TOTAL                                                                                           $84.02 
 ──────────────────────────────────
-41 cloud resources were detected:
-∙ 7 were estimated, 5 of which include usage-based costs, see https://infracost.io/usage-file
-∙ 31 were free:
+43 cloud resources were detected:
+∙ 8 were estimated, 6 of which include usage-based costs, see https://infracost.io/usage-file
+∙ 32 were free:
   ∙ 4 x aws_route_table_association
   ∙ 4 x aws_subnet
   ∙ 3 x aws_security_group
@@ -42,6 +47,7 @@ Project: gorillalogic/nestjs-graphql-nats-stack/terraform
   ∙ 2 x aws_route
   ∙ 2 x aws_route_table
   ∙ 1 x aws_acm_certificate
+  ∙ 1 x aws_acm_certificate_validation
   ∙ 1 x aws_db_subnet_group
   ∙ 1 x aws_ecr_lifecycle_policy
   ∙ 1 x aws_ecs_cluster

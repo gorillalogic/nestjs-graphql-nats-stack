@@ -16,10 +16,6 @@ resource "aws_cognito_user_pool" "default" {
     email_subject = "Account Confirmation"
     email_message = "Your confirmation code is {####}"
   }
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 resource "aws_cognito_user_pool_client" "client" {

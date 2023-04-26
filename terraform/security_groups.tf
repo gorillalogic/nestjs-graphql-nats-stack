@@ -20,7 +20,7 @@ resource "aws_security_group" "lb_sg" {
 }
 
 resource "aws_security_group" "ecs_tasks" {
-  name = "${var.name}-${var.environment}-tasks-sg"
+  name = "${var.name}-sg-task-${var.environment}"
   vpc_id = aws_vpc.main.id
 
   ingress {
@@ -41,7 +41,7 @@ resource "aws_security_group" "ecs_tasks" {
 }
 
 resource "aws_security_group" "rds_sg" {
-  name = "${var.name}-${var.environment}-rds-sg"
+  name = "${var.name}-rds-${var.environment}"
   vpc_id = aws_vpc.main.id
   
   ingress {
