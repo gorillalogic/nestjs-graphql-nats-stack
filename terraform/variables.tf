@@ -3,6 +3,10 @@ variable "name" {
   default = "nest-graphql-nats"
 }
 
+variable "domain" {
+  description = "Domain name"
+}
+
 variable "environment" {
   description = "the name of your environment, e.g \"prod\""
   default = "dev"

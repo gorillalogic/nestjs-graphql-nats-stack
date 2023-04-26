@@ -1,1 +1,1 @@
-
+domain = "graph.lat"

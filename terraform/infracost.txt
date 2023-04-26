@@ -18,13 +18,42 @@ Project: gorillalogic/nestjs-graphql-nats-stack/terraform
  ├─ Per GB per hour                                                     2  GB                       $6.49 
  └─ Per vCPU per hour                                                 0.5  CPU                     $14.78 
                                                                                                           
+ aws_lb.main                                                                                              
+ ├─ Application load balancer                                         730  hours                   $16.43 
+ └─ Load balancer capacity units                           Monthly cost depends on usage: $5.84 per LCU   
+                                                                                                          
  aws_nat_gateway.main                                                                                     
  ├─ NAT gateway                                                       730  hours                   $32.85 
  └─ Data processed                                         Monthly cost depends on usage: $0.045 per GB   
                                                                                                           
- OVERALL TOTAL                                                                                     $67.10 
+ aws_route53_zone.main                                                                                    
+ └─ Hosted zone                                                         1  months                   $0.50 
+                                                                                                          
+ OVERALL TOTAL                                                                                     $84.02 
 ──────────────────────────────────
-34 cloud resources were detected:
-∙ 5 were estimated, 4 of which include usage-based costs, see https://infracost.io/usage-file
-∙ 26 were free, rerun with --show-skipped to see details
-∙ 3 are not supported yet, rerun with --show-skipped to see details
+41 cloud resources were detected:
+∙ 7 were estimated, 5 of which include usage-based costs, see https://infracost.io/usage-file
+∙ 31 were free:
+  ∙ 4 x aws_route_table_association
+  ∙ 4 x aws_subnet
+  ∙ 3 x aws_security_group
+  ∙ 2 x aws_iam_role
+  ∙ 2 x aws_iam_role_policy_attachment
+  ∙ 2 x aws_route
+  ∙ 2 x aws_route_table
+  ∙ 1 x aws_acm_certificate
+  ∙ 1 x aws_db_subnet_group
+  ∙ 1 x aws_ecr_lifecycle_policy
+  ∙ 1 x aws_ecs_cluster
+  ∙ 1 x aws_ecs_task_definition
+  ∙ 1 x aws_eip
+  ∙ 1 x aws_iam_policy
+  ∙ 1 x aws_internet_gateway
+  ∙ 1 x aws_lb_listener
+  ∙ 1 x aws_lb_target_group
+  ∙ 1 x aws_route53_record
+  ∙ 1 x aws_vpc
+∙ 3 are not supported yet, see https://infracost.io/requested-resources:
+  ∙ 1 x aws_cognito_user_pool
+  ∙ 1 x aws_cognito_user_pool_client
+  ∙ 1 x aws_cognito_user_pool_domain
