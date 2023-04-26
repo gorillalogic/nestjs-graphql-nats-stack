@@ -65,12 +65,14 @@ const authSlice = createSlice({
         state.tokensRequestId = action.meta.requestId
       }
     })
-    builder.addCase(fetchTokens.rejected, (state) => {
-      state.state = AuthStateName.FAILED
-      state.tokensRequestId = undefined
-      state.challenge = undefined;
-      state.tokens = undefined;
-      state.tempCode = undefined;
+    builder.addCase(fetchTokens.rejected, (state, action) => {
+      if (state.state === AuthStateName.FETCHING_TOKENS && state.tokensRequestId === action.meta.requestId) {
+        state.state = AuthStateName.FAILED
+        state.tokensRequestId = undefined
+        state.challenge = undefined;
+        state.tokens = undefined;
+        state.tempCode = undefined;
+      }
     })
     builder.addCase(fetchTokens.fulfilled, (state, action) => {
       if (state.state === AuthStateName.FETCHING_TOKENS && state.tokensRequestId === action.meta.requestId) {
@@ -86,6 +88,9 @@ const authSlice = createSlice({
 
 export const fetchTokens = createAsyncThunk("/tokens", async (authorization_code: string, { getState }) => {
   const { auth } = getState() as { auth: AuthState };
+  if (auth.state !== AuthStateName.CHALLENGE_GENERATED) {
+    return;
+  }
 
   const response = await fetch(`${import.meta.env.VITE_LOGIN_COGNITO_HOST}/oauth2/token`, {
     method: "POST",
