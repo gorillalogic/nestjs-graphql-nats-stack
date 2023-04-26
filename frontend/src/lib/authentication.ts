@@ -8,13 +8,13 @@ interface PreparationLoginData {
 
 export const prepareLoginRedirect = () : PreparationLoginData => {
   const { 
-    VITE_LOGIN_ENDPOINT: endpoint,
+    VITE_LOGIN_COGNITO_HOST: host,
     VITE_LOGIN_CLIENT_ID: client_id,
     VITE_LOGIN_RESPONSE_TYPE: response_type,
     VITE_LOGIN_SCOPE: scope,
     VITE_LOGIN_CODE_CHALLENGE_METHOD: code_challenge_method,
   } = import.meta.env;
-  if (!endpoint || !client_id || !response_type || !scope || !code_challenge_method) {
+  if (!host || !client_id || !response_type || !scope || !code_challenge_method) {
     throw "Error retrieving env vars";
   }
 
@@ -29,7 +29,7 @@ export const prepareLoginRedirect = () : PreparationLoginData => {
     code_challenge: code_challenge, 
     redirect_uri: window.location.origin + "/authorize",
   }).toString() + `&scope=${scope}`
-  const url = `${endpoint}?${params}`
+  const url = `${host}/login?${params}`
 
   return { 
     url, 
