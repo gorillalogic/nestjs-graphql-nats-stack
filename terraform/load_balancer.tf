@@ -1,6 +1,6 @@
 resource "aws_lb" "main" {
   name = "alb"
-  subnets = var.public_subnets
+  subnets = aws_subnet.public.*.id
   load_balancer_type = "application"
   security_groups = [aws_security_group.lb_sg.id] 
 }
