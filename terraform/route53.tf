@@ -4,8 +4,9 @@ resource "aws_route53_zone" "main" {
 
 resource "aws_route53_record" "main" {
   zone_id = aws_route53_zone.main.zone_id
-  name = "dev.${var.domain}"
+  name = var.domain
   type = "A"
+  allow_overwrite = true
 
   alias {
     name = aws_lb.main.dns_name
