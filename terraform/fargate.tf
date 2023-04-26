@@ -38,6 +38,8 @@ locals {
       value = aws_db_instance.default.db_name
     }
   ]
+  gateway_container_name = "graphql-gateway-${var.environment}" 
+  gateway_container_port = 3000
 }
 
 resource "aws_ecs_task_definition" "main" {
@@ -50,14 +52,14 @@ resource "aws_ecs_task_definition" "main" {
   task_role_arn = aws_iam_role.ecs_task_role.arn
   container_definitions = jsonencode([
     {
-      name = "graphql-gateway-${var.environment}"
+      name = local.gateway_container_name
       image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
       entryPoint = ["sh", "./entrypoint.sh"]
       essential = true
       portMappings = [{
         protocol = "tcp"
-        containerPort = 3000
-        hostPort = 3000
+        containerPort = local.gateway_container_port 
+        hostPort = local.gateway_container_port 
       }]
       environment = concat(local.common_env_vars, [])
       logConfiguration = {
@@ -126,6 +128,12 @@ resource "aws_ecs_service" "main" {
     security_groups = [aws_security_group.ecs_tasks.id]
     subnets = aws_subnet.public.*.id
     assign_public_ip = true
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.fargate.arn
+    container_name = local.gateway_container_name 
+    container_port = local.gateway_container_port
   }
 
   lifecycle {
