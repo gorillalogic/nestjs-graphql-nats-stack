@@ -5,7 +5,7 @@ import { Logger } from '@nestjs/common';
 
 @Catch()
 export class ExceptionFilter implements GqlExceptionFilter {
-  private readonly logger = new Logger(ExceptionFilter.name)
+  private readonly logger = new Logger(ExceptionFilter.name);
 
   catch(exception: any) {
     if (exception.code === 'ER_DUP_ENTRY') {
