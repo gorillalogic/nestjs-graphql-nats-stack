@@ -102,10 +102,4 @@ dist
 !.vscode/extensions.json
 
 # Env files
-.env*
-infra/terraform.tfstate
-infra/config.s3.tfbackend
-infra/terraform.tfstate.backup
-infra/terraform.tfvars
-terraform/.terraform.lock.hcl
-terraform/config.s3.tfbackend
+**/.env*
