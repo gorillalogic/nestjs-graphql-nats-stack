@@ -1,0 +1,4 @@
+nats: nats-streaming-server
+gw: nest start -w
+users: nest start users -w
+frontend: cd frontend && npm run dev -- --host

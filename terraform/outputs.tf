@@ -9,3 +9,11 @@ output "aws_db_instance_endpoint" {
 output "dns_servers" {
   value = aws_route53_zone.main.name_servers
 }
+
+output "cognito_user_pool_id" {
+  value = aws_cognito_user_pool.default.id
+}
+
+output "cognito_client_id" {
+  value = aws_cognito_user_pool_client.client.id
+}

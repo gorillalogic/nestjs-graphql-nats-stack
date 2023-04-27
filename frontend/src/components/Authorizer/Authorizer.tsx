@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks";
-import { createChallenge ,fetchTokens, AuthStateName } from '../../reducers/AuthReducer'
+import { createChallenge ,fetchTokens, testGraphAuth, AuthStateName } from '../../reducers/AuthReducer'
 import { RootState } from "../../configureStore";
 
 export default function Authorizer() {
@@ -17,6 +17,7 @@ export default function Authorizer() {
   useEffect(() => {
     console.log(flowState);
     if (flowState === AuthStateName.AUTHORIZED) {
+      dispatch(testGraphAuth());
       return;
     }
 

@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { prepareLoginRedirect } from "../lib/authentication";
+import graphqlClient from "../lib/graphql/client";
+import { gql } from "apollo-boost";
+import { RootState } from "../configureStore";
 
 export interface AuthStateTokens {
   id_token: string,
@@ -103,7 +106,7 @@ export const fetchTokens = createAsyncThunk("auth/tokens", async (authorization_
   const { auth } = getState() as { auth: AuthState };
 
   // Ensures it executes once at a time, which can happen with React Strict mode and double render.
-  const guard = (auth.state === AuthStateName.CHALLENGE_GENERATED && auth.tokensRequestId === requestId)
+  const guard = (auth.state === AuthStateName.FETCHING_TOKENS && auth.tokensRequestId === requestId)
   if (!guard) {
     return rejectWithValue("Request already in progress")
   }
@@ -128,5 +131,28 @@ export const fetchTokens = createAsyncThunk("auth/tokens", async (authorization_
   }
 })
 
-export const { saveChallenge, reset } = authSlice.actions;
+export const testGraphAuth = createAsyncThunk("graphql/test", async (_, { getState }) => {
+  const { auth: { tokens: { access_token } } } = getState() as RootState;
+  const response = await graphqlClient.query({
+    query: gql`
+      {
+        users {
+          id,
+          email,
+          firstName,
+          lastName,
+          isActive,
+        }
+      }   
+    `,
+    context: {
+      headers: {
+        authorization: `Bearer ${access_token}`, 
+      },
+    }
+  })
+  console.log("GraphQL Response", response);
+})
+
+export const { reset } = authSlice.actions;
 export default authSlice.reducer;
