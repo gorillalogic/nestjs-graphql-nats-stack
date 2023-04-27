@@ -18,9 +18,11 @@ export class CognitoService {
 
   async verify(accessToken: string) {
     const verifier = CognitoJwtVerifier.create({
-      userPoolId: this.configService.get('userPoolId', { infer: true }),
+      userPoolId: this.configService.get('cognito.userPoolId', {
+        infer: true,
+      }),
       tokenUse: 'access',
-      clientId: this.configService.get('clientId', { infer: true }),
+      clientId: this.configService.get('cognito.clientId', { infer: true }),
     });
 
     return await verifier.verify(accessToken);

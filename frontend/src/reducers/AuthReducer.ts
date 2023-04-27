@@ -132,7 +132,7 @@ export const fetchTokens = createAsyncThunk("auth/tokens", async (authorization_
 })
 
 export const testGraphAuth = createAsyncThunk("graphql/test", async (_, { getState }) => {
-  const { auth: { tokens: { access_token } } } = getState() as RootState;
+  const { auth } = getState() as RootState;
   const response = await graphqlClient.query({
     query: gql`
       {
@@ -147,7 +147,7 @@ export const testGraphAuth = createAsyncThunk("graphql/test", async (_, { getSta
     `,
     context: {
       headers: {
-        authorization: `Bearer ${access_token}`, 
+        authorization: `Bearer ${auth.tokens?.access_token}`, 
       },
     }
   })
