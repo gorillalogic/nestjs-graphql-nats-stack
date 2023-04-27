@@ -2,8 +2,6 @@ import { DataSource } from 'typeorm';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 import { CreateTables1682025075452 } from './1682025075452-CreateTables';
 
-console.log(process.env);
-
 export const migrationsConfig: () => MysqlConnectionOptions = () => ({
   type: process.env.DATABASE_TYPE == 'mariadb' ? 'mariadb' : 'mysql',
   host: process.env.DATABASE_HOST ?? '127.0.0.1',

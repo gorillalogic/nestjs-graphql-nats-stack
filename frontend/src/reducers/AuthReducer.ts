@@ -151,7 +151,6 @@ export const testGraphAuth = createAsyncThunk("graphql/test", async (_, { getSta
       },
     }
   })
-  console.log("GraphQL Response", response);
 })
 
 export const { reset } = authSlice.actions;

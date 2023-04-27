@@ -1,5 +1,5 @@
 #!/bin/sh
-# Erases terraform resources that are non-free, run when not working. Check infracost resport.
+# Erases terraform resources that are non-free. Use after work. Check infracost report.
 terraform destroy \
   -target aws_db_instance.default \
   -target aws_ecs_service.main \

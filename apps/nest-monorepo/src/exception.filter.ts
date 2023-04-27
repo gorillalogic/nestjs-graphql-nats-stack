@@ -1,9 +1,12 @@
 import { GqlExceptionFilter } from '@nestjs/graphql';
 import { Catch } from '@nestjs/common';
 import { GraphQLError } from 'graphql';
+import { Logger } from '@nestjs/common';
 
 @Catch()
 export class ExceptionFilter implements GqlExceptionFilter {
+  private readonly logger = new Logger(ExceptionFilter.name)
+
   catch(exception: any) {
     if (exception.code === 'ER_DUP_ENTRY') {
       return new GraphQLError(exception.code, {
@@ -13,7 +16,8 @@ export class ExceptionFilter implements GqlExceptionFilter {
         },
       });
     }
-    console.log('[ERROR]', JSON.stringify(exception));
+
+    this.logger.log(JSON.stringify(exception));
     return exception;
   }
 }

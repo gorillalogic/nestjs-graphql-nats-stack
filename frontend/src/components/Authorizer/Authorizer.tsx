@@ -15,7 +15,6 @@ export default function Authorizer() {
   }
 
   useEffect(() => {
-    console.log(flowState);
     if (flowState === AuthStateName.AUTHORIZED) {
       dispatch(testGraphAuth());
       return;
@@ -40,11 +39,6 @@ export default function Authorizer() {
 
   return (
     <>
-      <li> { auth.tokens?.access_token ?? "Access Empty" } </li>
-      <li> { auth.tokens?.refresh_token ?? "Refresh Empty" } </li>
-      <li> { auth.challenge?.url } </li>
-      <li> { auth.challenge?.code_verifier } </li>
-      <li> { auth.challenge?.code_challenge } </li>
     </>
   )
 }
