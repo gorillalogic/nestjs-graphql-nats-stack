@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CognitoJwtVerifier } from 'aws-jwt-verify';
 
 @Injectable()
 export class CognitoService {
+  private readonly logger = new Logger(CognitoService.name);
+
   constructor(
     private configService: ConfigService<
       {

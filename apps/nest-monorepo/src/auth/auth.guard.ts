@@ -19,9 +19,8 @@ export class AuthGuard implements CanActivate {
     const ctx = GqlExecutionContext.create(context);
     const request = ctx.getContext().req;
     const token = this.extractTokenFromHeader(request);
-    this.logger.log(token)
     if (!token) {
-      this.logger.log("No Token");
+      this.logger.log('No Token');
       throw new UnauthorizedException();
     }
 
