@@ -10,15 +10,27 @@ type User {
   isActive: Boolean!
 }
 
+type Task {
+  id: Float!
+  contents: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
 type Query {
   users: [User!]!
   user(id: Int!): User!
+  tasks: [Task!]!
+  task(id: Int!): Task!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): Boolean!
+  createTask(createTaskInput: CreateTaskInput!): Task!
+  updateTask(updateTaskInput: UpdateTaskInput!): Task!
+  removeTask(id: Int!): Boolean!
 }
 
 input CreateUserInput {
@@ -33,5 +45,14 @@ input UpdateUserInput {
   firstName: String
   lastName: String
   isActive: Boolean
+  id: Int!
+}
+
+input CreateTaskInput {
+  contents: String!
+}
+
+input UpdateTaskInput {
+  contents: String
   id: Int!
 }

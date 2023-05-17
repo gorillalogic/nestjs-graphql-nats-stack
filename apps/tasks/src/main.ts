@@ -1,11 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { Transport, MicroserviceOptions } from '@nestjs/microservices';
-import { UsersModule } from 'apps/nest-monorepo/src/users/users.module';
-import { TasksModule } from './tasks.module';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    TasksModule,
+    AppModule,
     {
       transport: Transport.NATS,
       options: {

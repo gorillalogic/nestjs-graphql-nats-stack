@@ -11,6 +11,7 @@ export class TasksResolver {
   constructor(private readonly tasksService: TasksService) {}
 
   @Mutation(() => Task)
+  @UseFilters(ExceptionFilter)
   createTask(@Args('createTaskInput') createTaskInput: CreateTaskInput) {
     return this.tasksService.create(createTaskInput);
   }

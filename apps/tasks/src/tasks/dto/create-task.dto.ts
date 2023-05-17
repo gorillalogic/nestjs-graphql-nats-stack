@@ -1,1 +1,3 @@
-export class CreateTaskDto {}
+export class CreateTaskDto {
+  contents: string;
+}

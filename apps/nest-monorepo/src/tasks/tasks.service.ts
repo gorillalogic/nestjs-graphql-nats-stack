@@ -36,7 +36,7 @@ export class TasksService {
 
   findOne(id: number): Promise<Task> {
     const result = this.client
-      .send<Task>('findOneUser', id)
+      .send<Task>('findOneTask', id)
       .pipe(timeout(5000), map(existsOrFail));
     return firstValueFrom(result);
   }
@@ -50,7 +50,7 @@ export class TasksService {
 
   remove(id: number): Promise<boolean> {
     const result = this.client
-      .send<boolean>('removeUser', id)
+      .send<boolean>('removeTask', id)
       .pipe(timeout(5000), map(existsOrFail));
     return firstValueFrom(result);
   }
