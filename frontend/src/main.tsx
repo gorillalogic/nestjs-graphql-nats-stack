@@ -7,6 +7,7 @@ import { store, persistor } from './configureStore.ts';
 import { ApolloProvider   } from '@apollo/client';
 import router from "./router.tsx";
 import graphqlClient from "./lib/graphql/client";
+import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

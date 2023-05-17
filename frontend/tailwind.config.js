@@ -9,6 +9,7 @@ export default {
     extend: {
       fontFamily: {
         'sans': ['Roboto', ...defaultTheme.fontFamily.sans],
+        'pacifico': ['Pacifico', ...defaultTheme.fontFamily.sans],
       },
     },
   },

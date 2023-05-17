@@ -1,5 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import Task from './Task';
+import { AddIcon, ApproveIcon } from './Icons';
 
 interface ResourceTask {
   id: string
@@ -37,14 +38,15 @@ export default function() {
   if (loading) return <p>Loading ...</p>;
 
   const tasks = (data?.tasks ?? []).map((task: ResourceTask) => (
-    <Task key={task.id} contents={task.contents} />
+    <Task key={task.id} contents={task.contents} icon={<ApproveIcon />} />
   )) 
   const newTask = (<div 
     className="mx-5 my-5">
-    <Task key="new-task"/>
+    <Task key="new-task" icon={<AddIcon />} />
   </div>)
   return (
-    <div className="my-10 w-1/2 max-w-md mx-auto">
+    <div className="my-10 max-w-md mx-auto">
+      <h1 className="m-20 text-8xl text-indigo-800 font-pacifico text-center">To Do</h1>
       {error?.message}
       {!error ? tasks : null}
       {!error ? newTask : null}
