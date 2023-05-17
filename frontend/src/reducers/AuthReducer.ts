@@ -131,27 +131,5 @@ export const fetchTokens = createAsyncThunk("auth/tokens", async (authorization_
   }
 })
 
-export const testGraphAuth = createAsyncThunk("graphql/test", async (_, { getState }) => {
-  const { auth } = getState() as RootState;
-  const response = await graphqlClient.query({
-    query: gql`
-      {
-        users {
-          id,
-          email,
-          firstName,
-          lastName,
-          isActive,
-        }
-      }   
-    `,
-    context: {
-      headers: {
-        authorization: `Bearer ${auth.tokens?.access_token}`, 
-      },
-    }
-  })
-})
-
 export const { reset } = authSlice.actions;
 export default authSlice.reducer;

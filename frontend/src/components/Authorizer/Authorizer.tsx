@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks";
-import { createChallenge ,fetchTokens, testGraphAuth, AuthStateName } from '../../reducers/AuthReducer'
+import { createChallenge ,fetchTokens, AuthStateName } from '../../reducers/AuthReducer'
 import { RootState } from "../../configureStore";
 
 export default function Authorizer() {
@@ -16,7 +16,9 @@ export default function Authorizer() {
 
   useEffect(() => {
     if (flowState === AuthStateName.AUTHORIZED) {
-      dispatch(testGraphAuth());
+      if (window.location.pathname == "/authorize") {
+        window.location.replace("/");
+      }
       return;
     }
 
@@ -37,9 +39,5 @@ export default function Authorizer() {
 
   }, [auth.state])
 
-  return (
-    <>
-      Authorizer
-    </>
-  )
+  return (null)
 }

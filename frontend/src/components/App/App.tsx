@@ -1,9 +1,10 @@
+import TaskList from '../Task/TaskList'
 import './App.css'
 
 function App() {
   return (
     <>
-      App 
+      <TaskList />
     </>
   )
 }

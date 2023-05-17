@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: linear-gradient(45deg , #4f46e4 10%,transparent 11%, transparent 89% , #4f46e4 90%),
+    linear-gradient(135deg , #4f46e4 10%,transparent 11%, transparent 89% , #4f46e4 90%),
+    radial-gradient(circle, transparent 25%, #f5f5f5 26%),
+    linear-gradient(0deg, transparent 44%, #4f46e4 45%, #4f46e4 55%, transparent 56%), 
+    linear-gradient(90deg, transparent 44%, #4f46e4 45%, #4f46e4 55%, transparent 56%);
+  background-size: 3em 3em;
+  background-color: #f5f5f5;
+  opacity: 1
+}
