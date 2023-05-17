@@ -8,6 +8,7 @@ import {
 import { Request } from 'express';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { CognitoService } from './cognito.service';
+import { GraphQLError } from 'graphql';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -21,7 +22,7 @@ export class AuthGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
     if (!token) {
       this.logger.log('No Token');
-      throw new UnauthorizedException();
+      throw new GraphQLError('FORBIDDEN');
     }
 
     try {
@@ -29,7 +30,7 @@ export class AuthGuard implements CanActivate {
       this.logger.log('Jwt Session Token is valid', payload);
     } catch (err) {
       this.logger.log(err);
-      throw new UnauthorizedException();
+      throw new GraphQLError('EXPIRED_TOKEN');
     }
 
     return true;

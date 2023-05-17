@@ -13,6 +13,20 @@ export class ExceptionFilter implements GqlExceptionFilter {
         extensions: {
           code: exception.code,
           error: exception,
+          http: {
+            status: 400,
+          },
+        },
+      });
+    }
+    if (exception.code === 'EXPIRED_TOKEN' || exception.code === 'FORBIDDEN') {
+      return new GraphQLError(exception.code, {
+        extensions: {
+          code: exception.code,
+          error: exception,
+          http: {
+            status: 401,
+          },
         },
       });
     }

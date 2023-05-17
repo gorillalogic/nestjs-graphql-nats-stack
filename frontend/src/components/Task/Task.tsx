@@ -1,6 +1,10 @@
 import { AddIcon, ApproveIcon } from "./Icons";
 
-export default function({ contents = undefined }){
+export interface ITaskProps {
+  contents?: string
+}
+
+export default function({ contents = undefined } : ITaskProps){
   return (
     <div className="relative my-1 mx-auto w-full max-w-md shadow-sm bg-white">
       <input

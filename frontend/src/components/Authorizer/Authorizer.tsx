@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks";
-import { createChallenge ,fetchTokens, AuthStateName } from '../../reducers/AuthReducer'
+import { createChallenge ,fetchTokens, reset, AuthStateName } from '../../reducers/AuthReducer'
 import { RootState } from "../../configureStore";
 
 export default function Authorizer() {
@@ -14,10 +14,19 @@ export default function Authorizer() {
     return params.get("code");
   }
 
+  const resetOpt: () => string | null = () => {
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    return params.get("reset");
+  }
+
   useEffect(() => {
     if (flowState === AuthStateName.AUTHORIZED) {
       if (window.location.pathname == "/authorize") {
         window.location.replace("/");
+      }
+      if (resetOpt()) {
+        dispatch(reset())
       }
       return;
     }

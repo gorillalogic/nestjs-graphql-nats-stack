@@ -17,6 +17,7 @@ export class TasksResolver {
   }
 
   @Query(() => [Task], { name: 'tasks' })
+  @UseFilters(ExceptionFilter)
   findAll() {
     return this.tasksService.findAll();
   }
