@@ -38,18 +38,21 @@ export default function() {
   if (loading) return <p>Loading ...</p>;
 
   const tasks = (data?.tasks ?? []).map((task: ResourceTask) => (
-    <Task key={task.id} contents={task.contents} icon={<ApproveIcon />} />
+    <div className="mx-5">
+      <Task key={task.id} contents={task.contents} icon={<ApproveIcon />} />
+    </div>
   )) 
-  const newTask = (<div 
-    className="mx-5 my-5">
-    <Task key="new-task" icon={<AddIcon />} />
-  </div>)
+  const newTask = (
+    <div className="my-5">
+      <Task key="new-task" icon={<AddIcon />} placeholder="New Task..." />
+    </div>
+  )
   return (
     <div className="my-10 max-w-md mx-auto">
       <h1 className="m-20 text-8xl text-indigo-800 font-pacifico text-center">To Do</h1>
       {error?.message}
-      {!error ? tasks : null}
       {!error ? newTask : null}
+      {!error ? tasks : null}
     </div>
   )
 }
