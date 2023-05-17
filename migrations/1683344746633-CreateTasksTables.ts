@@ -8,7 +8,7 @@ export class CreateTasksTables1683344746633 implements MigrationInterface {
         \`contents\` text NOT NULL,
         \`created_at\` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
         \`updated_at\` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      PRIMARY KEY (\`id\`),
+      PRIMARY KEY (\`id\`)
       ) ENGINE=InnoDB AUTO_INCREMENT=292 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;`,
     );
   }

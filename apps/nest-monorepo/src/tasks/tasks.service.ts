@@ -47,4 +47,11 @@ export class TasksService {
       .pipe(timeout(5000), map(existsOrFail));
     return firstValueFrom(result);
   }
+
+  remove(id: number): Promise<boolean> {
+    const result = this.client
+      .send<boolean>('removeUser', id)
+      .pipe(timeout(5000), map(existsOrFail));
+    return firstValueFrom(result);
+  }
 }

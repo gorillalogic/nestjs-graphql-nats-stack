@@ -1,10 +1,11 @@
-import Authorizer from "../components/Authorizer/Authorizer.tsx";
-import App from "../components/App/App.tsx";
+import Authorizer from "../components/Authorizer/Authorizer";
+import App from "../components/App/App";
 
 export default function Root() { 
   return (
-    <App>
+    <>
       <Authorizer />
-    </App>
+      <App />
+    </>
   )
 };
