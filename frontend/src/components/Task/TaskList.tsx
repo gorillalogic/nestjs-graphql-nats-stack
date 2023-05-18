@@ -4,6 +4,7 @@ import Task from './Task';
 import { AddIcon, ApproveIcon } from './Icons';
 import { subscribeKey } from "../../lib/events";
 import { debounce } from "lodash"
+import { fetchTasks } from "../../reducers/graphql/TaskReducer";
 
 interface ResourceTask {
   id: string
@@ -62,8 +63,6 @@ export default function() {
   const [addTask, addTaskProps] = useMutation(ADD_TASK);
   const [updateTask, updateTaskProps] = useMutation(UPDATE_TASK);
 
-  let notice;
-
   useEffect(() => {
      return subscribeKey(
       'Enter',
@@ -72,47 +71,33 @@ export default function() {
     ) 
   }, []);
 
+  const debouncedGetTasks = useCallback(debounce((variables: any) => {
+    getTasksProps.refetch();
+  }, 300), []);
   const debouncedAddTask = useCallback(debounce((variables: any) => {
     addTask({ variables });
   }, 300), []);
-  const debounceUpdateTask = useCallback(debounce((variables: any) => {
+  const debouncedUpdateTask = useCallback(debounce((variables: any) => {
     updateTask({ variables });
   }, 300), []);
 
-  if (getTasksProps.loading) {
-    notice = "Loading..." 
-  }
-  if (getTasksProps.error) {
-    notice = getTasksProps.error.message
-  }
-
-  if (addTaskProps.loading) {
-    notice = "Adding..."
-  }
-  if (addTaskProps.error) {
-    notice = addTaskProps.error.message
-  }
-  if (addTaskProps.called && !addTaskProps.error) {
+  if (addTaskProps.data && !addTaskProps.error) {
     addTaskProps.reset();
     setNewTask(DEFAULT_NEW_TASK);
     getTasksProps.refetch();
-    notice = "Loading..." 
   }
   if (enterKeyPressed) {
     debouncedAddTask({ contents: newTask.contents });
   }
 
-  if (updateTaskProps.loading) {
-    notice = "Updating..."
-  }
-  if (updateTaskProps.error) {
-    notice = updateTaskProps.error.message
-  }
-  if (updateTaskProps.called && !updateTaskProps.error) {
+  if (updateTaskProps.data && !updateTaskProps.error) {
     updateTaskProps.reset();
-    getTasksProps.refetch();
-    notice = "Loading";
+    debouncedGetTasks({})
   }
+
+  let notice = addTaskProps.error?.message || updateTaskProps.error?.message || getTasksProps.error?.message;
+  let newTaskAnimationClass = addTaskProps.loading ? "animate-spin" : "animate-none";
+  let taskAnimationClass = updateTaskProps.loading || getTasksProps.loading ? "animate-spin" : "animate-none";
 
   const tasksComp = (getTasksProps.data?.tasks ?? []).map((task: ResourceTask) => (
     <div className="mx-5" key={task.id}>
@@ -121,11 +106,15 @@ export default function() {
           {
             defaultValue: task.contents,
             onChange: (event: React.ChangeEvent<HTMLInputElement>) => { 
-              debounceUpdateTask({ id: task.id, contents: event.target.value })
+              debouncedUpdateTask({ id: task.id, contents: event.target.value })
             }
           }
         }
-        icon={<ApproveIcon />} 
+        icon={
+          <div className={taskAnimationClass}>
+            <ApproveIcon />
+          </div>
+        }
         onClick={() => {}}
       />
     </div>
@@ -142,16 +131,21 @@ export default function() {
             placeholder: "New Task..." 
           }
         }
-        icon={<AddIcon />} 
+        icon={
+          <div className={newTaskAnimationClass}>
+            <AddIcon />
+          </div>
+        } 
         onClick={() => { debouncedAddTask({ contents: newTask.contents }) } }
       />
     </div>
   )
+
   return (
     <div className="my-10 max-w-md mx-auto">
       <h1 className="m-20 text-8xl text-indigo-800 font-pacifico text-center">To Do</h1>
-      {notice}
       {!getTasksProps.error ? newTaskComp : null}
+      {notice}
       {!getTasksProps.error ? tasksComp : null}
     </div>
   )
