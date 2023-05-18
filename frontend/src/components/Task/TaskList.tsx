@@ -36,16 +36,32 @@ const ADD_TASK = gql`
   }
 `;
 
+const UPDATE_TASK = gql`
+  mutation UpdateTask($id: Int!, $contents: String!) {
+    updateTask(updateTaskInput: {
+      id: $id,
+      contents: $contents,
+    }) {
+      id
+      contents
+      createdAt
+      updatedAt
+    }
+  } 
+`
+
 const DEFAULT_NEW_TASK = {
   contents: "",
 }
  
 export default function() {
-  const [tasks, setTasks] = useState({});
   const [newTask, setNewTask] = useState(DEFAULT_NEW_TASK);
+  const [enterKeyPressed, setEnterKeyPressed] = useState(false);
+
   const getTasksProps = useQuery(GET_TASKS_QUERY);
   const [addTask, addTaskProps] = useMutation(ADD_TASK);
-  const [enterKeyPressed, setEnterKeyPressed] = useState(false);
+  const [updateTask, updateTaskProps] = useMutation(UPDATE_TASK);
+
   let notice;
 
   useEffect(() => {
@@ -57,8 +73,11 @@ export default function() {
   }, []);
 
   const debouncedAddTask = useCallback(debounce((variables: any) => {
-      addTask({ variables });
-    }, 500), []);
+    addTask({ variables });
+  }, 300), []);
+  const debounceUpdateTask = useCallback(debounce((variables: any) => {
+    updateTask({ variables });
+  }, 300), []);
 
   if (getTasksProps.loading) {
     notice = "Loading..." 
@@ -68,7 +87,7 @@ export default function() {
   }
 
   if (addTaskProps.loading) {
-    notice = "Submitting..."
+    notice = "Adding..."
   }
   if (addTaskProps.error) {
     notice = addTaskProps.error.message
@@ -83,31 +102,48 @@ export default function() {
     debouncedAddTask({ contents: newTask.contents });
   }
 
+  if (updateTaskProps.loading) {
+    notice = "Updating..."
+  }
+  if (updateTaskProps.error) {
+    notice = updateTaskProps.error.message
+  }
+  if (updateTaskProps.called && !updateTaskProps.error) {
+    updateTaskProps.reset();
+    getTasksProps.refetch();
+    notice = "Loading";
+  }
+
   const tasksComp = (getTasksProps.data?.tasks ?? []).map((task: ResourceTask) => (
     <div className="mx-5" key={task.id}>
       <Task 
-        contents={task.contents}
+        inputProps={
+          {
+            defaultValue: task.contents,
+            onChange: (event: React.ChangeEvent<HTMLInputElement>) => { 
+              debounceUpdateTask({ id: task.id, contents: event.target.value })
+            }
+          }
+        }
         icon={<ApproveIcon />} 
-        onClick={() => { addTask({ variables: { contents: "sample" }}) }}
-        onChange={(event) => { 
-          setTasks({
-            ...tasks,
-            [task.id]: { ...task, contents: event.target.value },
-          });
-        }}
+        onClick={() => {}}
       />
     </div>
   )) 
   const newTaskComp = (
     <div className="my-5">
       <Task 
-        contents={newTask.contents}
+        inputProps={
+          {
+            value: newTask.contents,
+            onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+              setNewTask({ contents: event.target.value });
+            },
+            placeholder: "New Task..." 
+          }
+        }
         icon={<AddIcon />} 
-        placeholder="New Task..." 
-        onClick={() => { debouncedAddTask(newTask.contents) } }
-        onChange={(event) => {
-          setNewTask({ contents: event.target.value });
-        }}
+        onClick={() => { debouncedAddTask({ contents: newTask.contents }) } }
       />
     </div>
   )
