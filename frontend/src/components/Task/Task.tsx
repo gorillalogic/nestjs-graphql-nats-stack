@@ -11,7 +11,7 @@ export default function({
    icon,
    onClick,
   } : ITaskProps){
-  const iconSection = (
+  const actionSection = (
     <span className="absolute inset-y-0 end-0 grid w-10 place-content-center">
       <button
         type="button"
@@ -30,7 +30,7 @@ export default function({
         className="w-4/5 rounded-md border-gray-200 py-2.5 ps-5 pe-10 focus:outline-none"
         {...inputProps}
       />
-      { icon ? iconSection : "" }
+      { icon ? actionSection : "" }
     </div>
   )
 }

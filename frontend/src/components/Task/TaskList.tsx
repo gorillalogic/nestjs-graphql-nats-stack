@@ -1,10 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { gql, useQuery, useMutation } from '@apollo/client';
 import Task from './Task';
-import { AddIcon, ApproveIcon } from './Icons';
+import { AddIcon, ApproveIcon, DeleteIcon } from './Icons';
 import { subscribeKey } from "../../lib/events";
 import { debounce } from "lodash"
-import { fetchTasks } from "../../reducers/graphql/TaskReducer";
 
 interface ResourceTask {
   id: string
@@ -128,7 +127,7 @@ export default function() {
             onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
               setNewTask({ contents: event.target.value });
             },
-            placeholder: "New Task..." 
+            placeholder: "New Task...", 
           }
         }
         icon={
