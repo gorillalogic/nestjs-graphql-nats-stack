@@ -41,7 +41,8 @@ export default function({
   onError = () => {},
 } : ITaskProps){
   const [updateTask, updateTaskProps] = useMutation(UPDATE_TASK);
-  const taskAnimationClass = updateTaskProps.loading ? "animate-spin" : "animate-none";
+  const animateSpin = updateTaskProps.loading ? "animate-spin" : "animate-none";
+  const animatePulse = updateTaskProps.loading ? "animate-pulse" : "animate-none";
 
   const debouncedUpdateTask = useCallback(debounce((variables: any) => {
     updateTask({ variables });
@@ -58,7 +59,7 @@ export default function({
   }
 
   return (
-    <div className="relative my-1 mx-auto w-full max-w-md shadow-sm bg-white">
+    <div className={`relative my-1 mx-auto w-full max-w-md shadow-sm bg-white ${animatePulse}`}>
       <input
         type="text"
         className="w-4/5 rounded-md border-gray-200 py-2.5 ps-5 pe-10 focus:outline-none"
@@ -76,7 +77,7 @@ export default function({
           className="rounded-full bg-indigo-800 p-0.5 text-white hover:bg-indigo-600"
           {...stateButtonProps}
         >
-          <div className={taskAnimationClass}>
+          <div className={animateSpin}>
             <ApproveIcon />
           </div>
         </button>
