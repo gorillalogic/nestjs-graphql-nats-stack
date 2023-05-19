@@ -12,6 +12,9 @@ export class Task {
   completed: boolean;
 
   @Field()
+  userId: string;
+
+  @Field()
   createdAt: string;
 
   @Field()

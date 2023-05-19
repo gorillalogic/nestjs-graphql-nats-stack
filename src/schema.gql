@@ -14,6 +14,7 @@ type Task {
   id: Float!
   contents: String!
   completed: Boolean!
+  userId: String!
   createdAt: String!
   updatedAt: String!
 }

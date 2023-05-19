@@ -3,7 +3,6 @@ import {
   ExecutionContext,
   Injectable,
   Logger,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { GqlExecutionContext } from '@nestjs/graphql';
@@ -27,6 +26,7 @@ export class AuthGuard implements CanActivate {
 
     try {
       const payload = await this.cognitoService.verify(token);
+      request['user_id'] = payload.username;
       this.logger.log('Jwt Session Token is valid', payload);
     } catch (err) {
       this.logger.log(err);

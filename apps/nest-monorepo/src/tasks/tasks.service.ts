@@ -19,9 +19,12 @@ const existsOrFail = (val: any) => {
 export class TasksService {
   constructor(@Inject('GW_SERVICE') private client: ClientProxy) {}
 
-  create(createTaskInput: CreateTaskInput): Promise<Task | string> {
+  create(
+    createTaskInput: CreateTaskInput,
+    userId: string,
+  ): Promise<Task | string> {
     const result = this.client
-      .send<Task>('createTask', createTaskInput)
+      .send<Task>('createTask', { ...createTaskInput, userId })
       .pipe(timeout(5000));
     return firstValueFrom(result);
   }

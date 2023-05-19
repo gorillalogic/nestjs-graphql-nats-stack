@@ -13,6 +13,7 @@ const UPDATE_TASK = gql`
       id
       contents
       completed
+      userId
       createdAt
       updatedAt
     }
@@ -28,6 +29,7 @@ export interface IResourceTask {
   id: string
   contents: string
   completed: boolean
+  userId: string
   createdAt: string
   updatedAt: string
 }

@@ -17,6 +17,9 @@ export class Task {
   @Column('boolean')
   completed: boolean;
 
+  @Column({ length: 50 })
+  userId: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
