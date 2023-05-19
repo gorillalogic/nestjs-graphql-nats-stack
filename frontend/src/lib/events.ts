@@ -6,10 +6,10 @@
  *   document.addEventListener('keydown', enterDown);
  *   document.addEventListener('keyup', enterUp);
  */
-export const keyHandlerBuilder = (callback: (keyCode: string) => void, keyCode: string) : ((event: KeyboardEvent) => void) => {
+export const keyHandlerBuilder = (callback: (keyCode: string) => void, keyCode: string, preventDefault: boolean | undefined = false) : ((event: KeyboardEvent) => void) => {
   return ((event: KeyboardEvent) => {
     if (event.key === keyCode) {
-      event.preventDefault();
+      if (preventDefault) event.preventDefault();
       callback(keyCode);
     } 
   })
