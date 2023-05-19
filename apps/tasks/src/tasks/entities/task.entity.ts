@@ -14,6 +14,9 @@ export class Task {
   @Column('text')
   contents: string;
 
+  @Column('boolean')
+  completed: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

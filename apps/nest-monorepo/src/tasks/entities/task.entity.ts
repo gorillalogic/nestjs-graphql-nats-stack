@@ -9,6 +9,9 @@ export class Task {
   contents: string;
 
   @Field()
+  completed: boolean;
+
+  @Field()
   createdAt: string;
 
   @Field()

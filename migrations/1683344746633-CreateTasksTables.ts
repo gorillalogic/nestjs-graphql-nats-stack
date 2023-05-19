@@ -6,6 +6,7 @@ export class CreateTasksTables1683344746633 implements MigrationInterface {
       `CREATE TABLE IF NOT EXISTS \`task\` (
         \`id\` int NOT NULL AUTO_INCREMENT,
         \`contents\` text NOT NULL,
+        \`completed\` bool NOT NULL DEFAULT false,
         \`createdAt\` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
         \`updatedAt\` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       PRIMARY KEY (\`id\`)

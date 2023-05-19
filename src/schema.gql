@@ -13,6 +13,7 @@ type User {
 type Task {
   id: Float!
   contents: String!
+  completed: Boolean!
   createdAt: String!
   updatedAt: String!
 }
@@ -55,4 +56,5 @@ input CreateTaskInput {
 input UpdateTaskInput {
   contents: String
   id: Int!
+  completed: Boolean!
 }

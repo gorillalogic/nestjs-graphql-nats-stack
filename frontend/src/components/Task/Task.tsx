@@ -1,16 +1,18 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { gql, useMutation } from '@apollo/client';
 import { debounce } from "lodash"
 import TextareaAutosize from "react-textarea-autosize";
 
 const UPDATE_TASK = gql`
-  mutation UpdateTask($id: Int!, $contents: String!) {
+  mutation UpdateTask($id: Int!, $contents: String, $completed: Boolean!) {
     updateTask(updateTaskInput: {
       id: $id,
       contents: $contents,
+      completed: $completed,
     }) {
       id
       contents
+      completed
       createdAt
       updatedAt
     }
@@ -25,6 +27,7 @@ const DELETE_TASK = gql`
 export interface IResourceTask {
   id: string
   contents: string
+  completed: boolean
   createdAt: string
   updatedAt: string
 }
@@ -34,7 +37,6 @@ export interface ITaskProps {
   inputProps?: React.ButtonHTMLAttributes<HTMLTextAreaElement>
   stateButtonProps?: React.ButtonHTMLAttributes<HTMLButtonElement>
   onChange?: () => void
-  onDelete?: () => void
   onError?: (err: string) => void
 }
 
@@ -43,9 +45,9 @@ export default function({
   inputProps = {},
   stateButtonProps = {},
   onChange = () => {},
-  onDelete = () => {},
   onError = () => {},
 } : ITaskProps){
+  const [task, setTask] = useState(taskRecord);
   const [updateTask, updateTaskProps] = useMutation(UPDATE_TASK);
   const [deleteTask, deleteTaskProps] = useMutation(DELETE_TASK);
   const animatePulse = updateTaskProps.loading || deleteTaskProps.loading ? "animate-pulse" : "animate-none";
@@ -60,7 +62,7 @@ export default function({
 
   if (updateTaskProps.data && !updateTaskProps.error) {
     updateTaskProps.reset();
-    onChange();
+    setTask(updateTaskProps.data.updateTask)
   }
 
   if (updateTaskProps.error) {
@@ -83,11 +85,14 @@ export default function({
       <span className="absolute h-full">
         <button
           type="button"
-          className="px-2 border-0"
+          className="px-2 border-0 focus:outline-none"
+          onClick={() => { 
+            debouncedUpdateTask({ id: task.id, contents: task.contents, completed: !task.completed })
+          }}
           {...stateButtonProps}
         >
           <span className="material-symbols-rounded text-md text-indigo-800">
-            radio_button_unchecked 
+            {task.completed ? "check_circle" : "radio_button_unchecked"}
           </span>
         </button>
       </span>
@@ -95,10 +100,10 @@ export default function({
       <TextareaAutosize
         type="text"
         className="w-full h-fit rounded-md border-gray-200 py-2.5 ps-10 pe-10 focus:outline-none"
-        defaultValue={ taskRecord.contents }
+        defaultValue={ task.contents }
         onChange={ 
           (event: React.ChangeEvent<HTMLTextAreaElement>) => { 
-            debouncedUpdateTask({ id: taskRecord.id, contents: event.target.value })
+            debouncedUpdateTask({ id: task.id, contents: event.target.value, completed: task.completed })
           }
         }
         {...inputProps}
@@ -107,9 +112,9 @@ export default function({
       <span className="absolute end-0">
         <button
           type="button"
-          className="px-2 border-0"
+          className="px-2 border-0 focus:outline-none"
           {...stateButtonProps}
-          onClick={() => { debouncedDeleteTask({ id: taskRecord.id }) }}
+          onClick={() => { debouncedDeleteTask({ id: task.id }) }}
         >
           <span className="material-symbols-rounded text-md text-red-500">delete</span>
         </button>

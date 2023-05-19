@@ -9,6 +9,7 @@ const GET_TASKS_QUERY = gql`
     tasks {
       id
       contents
+      completed
       createdAt
       updatedAt
     }
