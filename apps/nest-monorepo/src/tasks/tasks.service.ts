@@ -29,8 +29,8 @@ export class TasksService {
     return firstValueFrom(result);
   }
 
-  findAll(): Promise<Task[]> {
-    const result = this.client.send<Task[]>('findAllTasks', {}).pipe(
+  findAll(userId: string): Promise<Task[]> {
+    const result = this.client.send<Task[]>('findAllTasks', userId).pipe(
       timeout(5000),
       map((arr) => arr.map((row: Task) => Object.assign(new Task(), row))),
     );

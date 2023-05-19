@@ -14,8 +14,8 @@ export class TasksController {
   }
 
   @MessagePattern('findAllTasks')
-  findAll() {
-    return this.tasksService.findAll();
+  findAll(@Payload() userId: string) {
+    return this.tasksService.findAll(userId);
   }
 
   @MessagePattern('findOneTask')

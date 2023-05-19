@@ -40,8 +40,8 @@ export class TasksResolver {
 
   @Query(() => [Task], { name: 'tasks' })
   @UseFilters(ExceptionFilter)
-  findAll() {
-    return this.tasksService.findAll();
+  findAll(@UserId() userId: string) {
+    return this.tasksService.findAll(userId);
   }
 
   @Query(() => Task, { name: 'task' })
