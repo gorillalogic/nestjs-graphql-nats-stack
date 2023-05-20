@@ -1,29 +1,13 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Int,
-  GqlExecutionContext,
-} from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { TasksService } from './tasks.service';
 import { Task } from './entities/task.entity';
 import { CreateTaskInput } from './dto/create-task.input';
 import { UpdateTaskInput } from './dto/update-task.input';
-import {
-  createParamDecorator,
-  ExecutionContext,
-  UseFilters,
-} from '@nestjs/common';
+import { UseFilters } from '@nestjs/common';
 import { ExceptionFilter } from '../exception.filter';
-
-export const UserId = createParamDecorator(
-  (data: unknown, context: ExecutionContext) => {
-    const ctx = GqlExecutionContext.create(context);
-    const request = ctx.getContext().req;
-    return request['user_id'];
-  },
-);
+import { Roles } from '../auth/roles.decorator';
+import { Role } from '../auth/role.enum';
+import { RequestUser, User } from '../auth/user.decorator';
 
 @Resolver(() => Task)
 export class TasksResolver {
@@ -31,17 +15,18 @@ export class TasksResolver {
 
   @Mutation(() => Task)
   @UseFilters(ExceptionFilter)
+  @Roles(Role.User)
   createTask(
-    @UserId() userId: string,
+    @User() user: RequestUser,
     @Args('createTaskInput') createTaskInput: CreateTaskInput,
   ) {
-    return this.tasksService.create(createTaskInput, userId);
+    return this.tasksService.create(createTaskInput, user.id);
   }
 
   @Query(() => [Task], { name: 'tasks' })
   @UseFilters(ExceptionFilter)
-  findAll(@UserId() userId: string) {
-    return this.tasksService.findAll(userId);
+  findAll(@User() user: RequestUser) {
+    return this.tasksService.findAll(user.id);
   }
 
   @Query(() => Task, { name: 'task' })

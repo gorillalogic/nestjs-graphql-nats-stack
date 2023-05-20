@@ -26,7 +26,8 @@ export class AuthGuard implements CanActivate {
 
     try {
       const payload = await this.cognitoService.verify(token);
-      request['user_id'] = payload.username;
+      // Hardcoded user role for all users;
+      request.user = { id: payload.username, roles: ['user'] };
       this.logger.log('Jwt Session Token is valid', payload);
     } catch (err) {
       this.logger.log(err);
