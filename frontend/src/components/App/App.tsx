@@ -2,9 +2,7 @@ import TaskList from '../Task/TaskList'
 
 function App() {
   return (
-    <>
-      <TaskList />
-    </>
+    <TaskList />
   )
 }
 

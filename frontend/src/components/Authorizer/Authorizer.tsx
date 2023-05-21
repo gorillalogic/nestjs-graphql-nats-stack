@@ -35,7 +35,7 @@ export default function Authorizer() {
       dispatch(createChallenge())
       return
     }
-
+    
     const authCode = authenticationCode();
     if (flowState === AuthStateName.CHALLENGE_GENERATED) {
       if (!authCode) {

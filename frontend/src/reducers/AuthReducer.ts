@@ -1,9 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { prepareLoginRedirect } from "../lib/authentication";
-import graphqlClient from "../lib/graphql/client";
-import { gql } from "apollo-boost";
-import { RootState } from "../configureStore";
 
 export interface AuthStateTokens {
   id_token: string,
@@ -124,6 +121,7 @@ export const fetchTokens = createAsyncThunk("auth/tokens", async (authorization_
       redirect_uri: `${window.location.origin}/authorize`
     })
   })
+
   if (response.ok) {
     return await response.json(); 
   } else {
