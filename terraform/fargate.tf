@@ -87,6 +87,21 @@ resource "aws_ecs_task_definition" "main" {
       }
     },
     {
+      name = "microservice-tasks-${var.environment}"
+      image = "${aws_ecr_repository.nest-monorepo.repository_url}:latest"
+      entryPoint = ["node", "dist/apps/tasks/main.js"]
+      essential = true
+      environment = concat(local.common_env_vars, [])
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group = "/fargate/service/${var.name}-${var.environment}"
+          awslogs-region = "${var.aws-region}"
+          awslogs-stream-prefix = local.aws_ecs_service_name
+        }
+      }
+    },
+    {
       name = "nats-${var.environment}"
       image = "nats:latest"
       essential = true

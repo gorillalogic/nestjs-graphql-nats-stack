@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { gql, useMutation } from '@apollo/client';
 import { debounce } from "lodash"
-import TextareaAutosize from "react-textarea-autosize";
+import TextareaAutosize, { TextareaAutosizeProps } from "react-textarea-autosize";
 
 const UPDATE_TASK = gql`
   mutation UpdateTask($id: Int!, $contents: String, $completed: Boolean!) {
@@ -36,7 +36,7 @@ export interface IResourceTask {
 
 export interface ITaskProps {
   taskRecord: IResourceTask,
-  inputProps?: React.ButtonHTMLAttributes<HTMLTextAreaElement>
+  inputProps?: TextareaAutosizeProps,
   stateButtonProps?: React.ButtonHTMLAttributes<HTMLButtonElement>
   onChange?: () => void
   onError?: (err: string) => void
@@ -100,7 +100,6 @@ export default function({
       </span>
 
       <TextareaAutosize
-        type="text"
         className="w-full h-fit rounded-md border-gray-200 py-2.5 ps-10 pe-10 focus:outline-none"
         defaultValue={ task.contents }
         onChange={ 

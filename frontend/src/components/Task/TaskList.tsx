@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { gql, useQuery, useMutation } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import Task, { IResourceTask } from './Task';
 import TaskNew from './TaskNew';
 import { debounce } from "lodash"
@@ -21,7 +21,7 @@ export default function() {
   const getTasksProps = useQuery(GET_TASKS_QUERY);
   const animate = getTasksProps.loading ? "animate-pulse" : "animate-none";
 
-  const debouncedGetTasks = useCallback(debounce((variables: any = {}) => {
+  const debouncedGetTasks = useCallback(debounce((_variables: any = {}) => {
     getTasksProps.refetch();
   }, 300), []);
 
