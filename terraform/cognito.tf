@@ -9,6 +9,7 @@ resource "aws_cognito_user_pool" "default" {
     require_numbers   = true
     require_symbols   = true
     require_uppercase = true
+    temporary_password_validity_days = 7
   }
 
   verification_message_template {
@@ -22,6 +23,11 @@ resource "aws_cognito_user_pool_client" "client" {
   name = "${var.name}-${var.environment}-cognito-user-pool-client"
   user_pool_id = aws_cognito_user_pool.default.id
   generate_secret = false
+  callback_urls = concat([
+    "http://localhost:5137/authorize",
+    "https://${aws_s3_bucket.frontend.website_endpoint}/authorize",
+    "https://${aws_route53_record.frontend.name}/authorize",
+  ], var.cognito_testing_callbacks)
 }
 
 resource "aws_cognito_user_pool_domain" "main" {

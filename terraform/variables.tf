@@ -7,6 +7,10 @@ variable "domain" {
   description = "Domain name"
 }
 
+variable "frontend_domain" {
+  description = "Name of the bucket that contains the frontend files"
+}
+
 variable "environment" {
   description = "the name of your environment, e.g \"prod\""
   default = "dev"
@@ -73,4 +77,10 @@ variable "logs_retention_in_days" {
   type = number
   default = 30
   description = "Specifies the number of days you want to retain log events"
+}
+
+variable "cognito_testing_callbacks" {
+  type = list(string)
+  description = "Cognito Testing Callbacks, like ngrok endpoints"
+  default = []
 }
