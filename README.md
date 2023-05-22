@@ -1,73 +1,63 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Simple ToDo App Monorepo
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<img width="567" alt="image" src="https://github.com/gorillalogic/nestjs-graphql-nats-stack/assets/42254348/bd3650dc-8dd4-412b-a5c5-9a6cd42671a9">
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- Simple ToDo App, allows to signup, signin, CRUD tasks and mark as done.
+- Using [NestJS](https://nestjs.com/) stack with GraphQL, NATS with a microservice arquitecture.
+- MariaDB database on AWS RDS.
+- User Management using AWS Cognito.
+- Frontend app using [Vite](https://vitejs.dev), React, Redux, Apollo Client. Deployed statically on S3 and cached using Cloudfront.
 
-## Description
+## File structure
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- /frontend contains the files related to the Vite React app.
+- /terraform contains the infrastructure related files.
+- /apps contain the microservice apps from NestJS.
 
-## Installation
+## Infra
 
+### Setup
+
+- Install Terraform v1.4.6
+- Install and configure aws cli
+- Run `terraform plan` to see potential changes and `terraform apply` to create the stack.
+- Optionally, install [infracost](https://github.com/infracost/infracost) for cost estimates.
+- Create terraform.tfvars in the /terraform dir, check variables.tf to see which vars are required.
+- This projects relies on AWS Fargate and ECR for storing docker images, so if it is desired to update the task definitions after a docker image update, run:
+  ```bash
+  terraform apply -replace="aws_ecs_task_definition.main"
+  ```
+  
+### Backend
+
+### Setup
+- Developed and tested on Node v18
+- Install [NestJS CLI](https://docs.nestjs.com/)
+- `brew install nats-streaming-server`
+- Install a mysql 8 compatible db locally. Or containerized version.
+- Create .env file using .env.example template, in the root dir.
+
+### To publish an image
+- An output of the terraform stack is the url of the ECR repository. To publish a new version:
 ```bash
-$ npm install
+docker build . --tag <ecr-repo-url>/<image-name>
+docker push <ecr-repo-url>/<image-name>
+```
+- If docker is not authenticated with AWS:
+```bash
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com 
 ```
 
-## Running the app
 
-```bash
-# development
-$ npm run start
+## Frontend
 
-# watch mode
-$ npm run start:dev
+### Setup
+- Create .env.local and .env.production files, follow .env.example to see which env vars are expected.
+- To build run `npm run build` or `npm run build --mode=production`.
+- To deploy, if the infrastructure is already deployed and the aws cli is ready to use:
+  ```bash
+  aws s3 sync ./dist s3://<bucket-name>
+  ```
 
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+## Where to test
+- Write me a DM for access to a hosted app or use a domain of your choice.
