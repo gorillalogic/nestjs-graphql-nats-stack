@@ -61,7 +61,16 @@ resource "aws_ecs_task_definition" "main" {
         containerPort = local.gateway_container_port 
         hostPort = local.gateway_container_port 
       }]
-      environment = concat(local.common_env_vars, [])
+      environment = concat(local.common_env_vars, [
+        {
+          name = "COGNITO_USER_POOL_ID",
+          value = aws_cognito_user_pool.default.id,
+        },
+        {
+          name = "COGNITO_CLIENT_ID",
+          value = aws_cognito_user_pool_client.client.id,
+        },
+      ])
       logConfiguration = {
         logDriver = "awslogs"
         options = {
