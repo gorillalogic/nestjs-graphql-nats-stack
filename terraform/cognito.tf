@@ -25,7 +25,7 @@ resource "aws_cognito_user_pool_client" "client" {
   generate_secret = false
   callback_urls = concat([
     "http://localhost:5137/authorize",
-    "https://${aws_s3_bucket.frontend.website_endpoint}/authorize",
+    "https://${aws_s3_bucket_website_configuration.main.website_endpoint}/authorize",
     "https://${aws_route53_record.frontend.name}/authorize",
   ], var.cognito_testing_callbacks)
 }

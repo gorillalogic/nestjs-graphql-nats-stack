@@ -38,7 +38,7 @@ EOF
   ]
 }
 
-resource "aws_cloudfront_distribution" "app_s3_distribution" {
+resource "aws_cloudfront_distribution" "frontend" {
   origin {
     domain_name = aws_s3_bucket_website_configuration.main.website_endpoint
     origin_id = "S3-.${aws_s3_bucket.frontend.bucket}"
