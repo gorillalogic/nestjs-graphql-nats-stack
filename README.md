@@ -14,7 +14,7 @@
 - /terraform contains the infrastructure related files.
 - /apps contain the microservice apps from NestJS.
 
-## Infra
+## Infrastructure
 
 ### Setup
 
@@ -90,3 +90,7 @@ aws ecr get-login-password --region us-east-1 | docker login --username AWS --pa
 
 ## Where to test
 - Write me a DM for access to a hosted app or use a domain of your choice.
+
+## Other resources
+### Infrastructure Diagram
+![image](https://github.com/gorillalogic/nestjs-graphql-nats-stack/assets/42254348/b84265b5-f362-4020-95d7-283edfb5b89b)
