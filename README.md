@@ -79,5 +79,14 @@ aws ecr get-login-password --region us-east-1 | docker login --username AWS --pa
 - MariaDB for production (AWS RDS), mysql 8 used locally.
 - Migrations and ORM is done using [TypeORM](https://typeorm.io)
 
+## Orchestration
+- Production containers run on AWS ECS Fargate, tasks and services are described in [fargate.tf](terraform/fargate.tf)
+
+## Networking and Permissions
+- Public/Private subnets on a non-default VPC in AWS. NAT Gateway provisioned by AWS that should be turned off when not in usage to avoid costs (~$30/mo). 
+- RDS public access blocked.
+- S3 for static files public access is not blocked for now, it should be and add an origin policy to ensure only cloudfront has read access to it. *Pending*
+- Review [network.tf](terraform/network.tf), [vpc.tf](terraform/vpc.tf), [subnets.tf](terraform/subnets.tf), [security_groups](terraform/security_groups.tf), [route53](terraform/route53.tf), [iam.tf](terraform/iam.tf) and others.
+
 ## Where to test
 - Write me a DM for access to a hosted app or use a domain of your choice.
