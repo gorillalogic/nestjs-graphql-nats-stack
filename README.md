@@ -28,7 +28,7 @@
   terraform apply -replace="aws_ecs_task_definition.main"
   ```
   
-### Backend
+## Backend
 
 ### Setup
 - Developed and tested on Node v18
@@ -48,7 +48,6 @@ docker push <ecr-repo-url>/<image-name>
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com 
 ```
 
-
 ## Frontend
 
 ### Setup
@@ -58,6 +57,27 @@ aws ecr get-login-password --region us-east-1 | docker login --username AWS --pa
   ```bash
   aws s3 sync ./dist s3://<bucket-name>
   ```
+  
+## Authentication
+
+- PKCE Authentication is used with Cognito, the flow is like this:
+  - React App attemps to read token stored in the Redux store.
+  - When token is found
+    - Attach as Bearer token to any graphql requests until a expired or invalid code is returned.
+    - Graphql Gateway verifies jwt token using Cognito APIs. Cognito randomized username is then used as identity id in the microservices.
+  - When token is not found.
+    - Redirects to cognito hosted page for authentication so the user can sign in or sign up. Code challenge/verifier pair is generated and challenge is passed as param.
+    - Cognito Auth page will redirect to the origin passing a single use token.
+    - React App retrieves Cognito token endpoint passing the single use token and the code verifier is passed as param.
+    - If successful, Cognito responds with jwt tokens.
+    - React App saves jwt tokens in redux store which are attached to future graphql requests.
+  
+## Authorization
+- RBAC, but for now any user is hardcoded with the `user` role. Manual testing was done to verify a potential admin role, but no feature requires this.
+
+## Backend Database
+- MariaDB for production (AWS RDS), mysql 8 used locally.
+- Migrations and ORM is done using [TypeORM](https://typeorm.io)
 
 ## Where to test
 - Write me a DM for access to a hosted app or use a domain of your choice.
