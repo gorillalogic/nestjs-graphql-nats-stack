@@ -93,4 +93,7 @@ aws ecr get-login-password --region us-east-1 | docker login --username AWS --pa
 
 ## Other resources
 ### Infrastructure Diagram
-![image](https://github.com/gorillalogic/nestjs-graphql-nats-stack/assets/42254348/b84265b5-f362-4020-95d7-283edfb5b89b)
+![image](https://github.com/gorillalogic/nestjs-graphql-nats-stack/assets/42254348/baa4b3d2-85f9-4114-b4fb-ecf09a01a126)
+
+
+- Review [network.tf](terraform/network.tf), [vpc.tf](terraform/vpc.tf), [subnets.tf](terraform/subnets.tf), [security_groups](terraform/security_groups.tf), [route53](terraform/route53.tf), [iam.tf](terraform/iam.tf) and others.
