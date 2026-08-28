@@ -34,7 +34,7 @@
     "@nestjs/typeorm": "^9.0.1",
     "aws-jwt-verify": "^4.0.0",
     "graphql": "^16.6.0",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.3.1",
     "mysql2": "^3.2.1",
     "nats": "^2.13.1",
     "reflect-metadata": "^0.1.13",
