@@ -35,7 +35,7 @@
     "aws-jwt-verify": "^4.0.0",
     "graphql": "^16.6.0",
     "js-yaml": "^4.1.0",
-    "mysql2": "^3.2.1",
+    "mysql2": "^3.24.2",
     "nats": "^2.13.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
